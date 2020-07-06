@@ -6,13 +6,20 @@
 		"node": true
 	},
 	"parserOptions": {
-		"ecmaVersion": 2018
+		"ecmaVersion": 2018,
+		"sourceType": "module"
 	},
 	"overrides": [
 		{
-			"files": ["src/**/*.test.js"],
+			"files": ["**/*.test.js"],
 			"env": {
 				"jest": true
+			}
+		},
+		{
+			"files": ["**/*.stories.js"],
+			"env": {
+				"browser": true
 			}
 		}
 	]
