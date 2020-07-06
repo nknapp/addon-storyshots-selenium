@@ -1,0 +1,79 @@
+{
+  "name": "@knappi/addon-storyshots-selenium",
+  "version": "0.0.0",
+  "description": "Use storyshots via selenium",
+  "main": "src/index.js",
+  "types": "types/index.d.ts",
+  "license": "MIT",
+  "private": false,
+  "funding": [
+    {
+      "type": "paypal",
+      "url": "https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GB656ZSAEQEXN&source=url"
+    },
+    {
+      "type": "liberapay",
+      "url": "https://liberapay.com/nils.knappmeier/donate"
+    }
+  ],
+  "files": [
+    "src/**/*.js",
+    "src/**/*.json"
+  ],
+  "scripts": {
+    "test:jest": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "pretest": "npm run lint",
+    "test": "npm run test:coverage --",
+    "posttest": "npm run format",
+    "format": "prettier --loglevel warn --write \"**/*.{js,ts,d.ts,css,md}\"",
+    "lint": "eslint . --cache --fix",
+    "check:format": "prettier --check \"**/*.{js,ts,d.ts,css,md}\"",
+    "check:lint": "eslint . --cache --max-warnings 0",
+    "thought": "thought run -a",
+    "changelog": "standard-changelog && git add CHANGELOG.md",
+    "version": "npm run changelog && npm run thought"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^3.6.0",
+    "@typescript-eslint/parser": "^3.6.0",
+    "eslint": "^7.4.0",
+    "eslint-config-prettier": "^6.7.0",
+    "husky": ">=4",
+    "jest": "^26.0.1",
+    "lint-staged": ">=10",
+    "prettier": "^2.0.5",
+    "standard-changelog": "^2.0.24",
+    "thought": "4",
+    "thought-plugin-jsdoc": "^2.0.0"
+  },
+  "dependencies": {
+    "debug": "^4.1.1"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.js": "eslint --cache --fix",
+    "*.{js,ts,d.ts,css,md}": "prettier --write"
+  },
+  "jest": {
+    "rootDir": ".",
+    "testMatch": [
+      "**/src/**/*.test.js"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 100,
+        "functions": 100,
+        "lines": 100,
+        "statements": 100
+      }
+    }
+  },
+  "author": "Nils Knappmeier <npm@knappi.org>",
+  "repository": "git@github.com:nknapp/node-chisel-tunnel.git"
+}

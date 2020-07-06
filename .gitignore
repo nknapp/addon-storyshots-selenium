@@ -1,0 +1,9 @@
+coverage/
+/.idea
+/*.iml
+.eslintcache
+/node_modules
+/tmp
+/testtmp
+/test-utils/fixtures/chisel/1.5.2/
+/chisel-cache/
