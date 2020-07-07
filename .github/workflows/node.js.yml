@@ -30,13 +30,17 @@ jobs:
         node-version: [10.x, 12.x, 14.x]
     steps:
     - uses: actions/checkout@v2
+    - name: Install docker+compose
+      if: ${{ matrix.os == 'macos-latest' }}
+      run: |
+          brew install docker-machine docker
+          sudo docker –version
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
     - run: docker-compose up -d
     - run: yarn install
-    - run: yarn prepare-fixtures
     - run: yarn test:coverage
     - run: docker-compose down
 
