@@ -33,6 +33,9 @@ jobs:
     - name: Install docker+compose
       if: ${{ matrix.os == 'macos-latest' }}
       run: brew install docker-machine docker docker-compose
+    - name: Start docker
+      if: ${{ matrix.os == 'macos-latest' }}
+      run: docker-machine start default
     - run: docker --version
     - run: docker-compose --version
     - name: Use Node.js ${{ matrix.node-version }}
