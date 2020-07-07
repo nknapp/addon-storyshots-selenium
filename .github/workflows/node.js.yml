@@ -34,6 +34,11 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
+    - run: docker-compse up -d
     - run: yarn install
     - run: yarn prepare-fixtures
     - run: yarn test:coverage
+    - run: docker-compose down
+
+
+
