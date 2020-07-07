@@ -3623,9 +3623,9 @@ chardet@^0.7.0:
   integrity sha512-mT8iDcrh03qDGRRmoA2hmBJnxpllMR+0/0qlzjqZES6NdiWDcZkCNAk4rPFZ9Q85r27unkiNNg8ZOiwZXBHwcA==
 
 child-service@^2.0.2:
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/child-service/-/child-service-2.2.0.tgz#6498ceb485de16d3d167d8a8cd61c7e751d7d7ce"
-  integrity sha512-J1tfyn5b1ne9FCetb8IWyI7XV3RXGWDKv5fIfVT1DMcv4yfjAptILQu/SKBNvCmqD/k/h7kIvjKho4EcRoZViw==
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/child-service/-/child-service-2.3.0.tgz#0216d787aaca76f37cd996e58c6cb41c1f46d45a"
+  integrity sha512-IZIEuw2oxI8o9ucLsItiGCkmTp32CHGLDkvGnF4ceZvmoo8C5GvPG//NyWIrI31wtftVoWHOkeS3F6FgSfCylw==
   dependencies:
     debug "^4.1.1"
 
