@@ -46,6 +46,7 @@
     "babel-cli": "^6.26.0",
     "babel-jest": "^26.1.0",
     "babel-loader": "^8.1.0",
+    "browserstack-local": "^1.4.5",
     "child-service": "^2.0.2",
     "chisel-tunnel": "^1.0.1",
     "eslint": "^7.4.0",
@@ -62,6 +63,7 @@
   "dependencies": {
     "debug": "^4.1.1",
     "jest-image-snapshot": "^4.0.2",
+    "selenium-webdriver": "^4.0.0-alpha.7",
     "webdriver": "^6.1.17"
   },
   "peerDependencies": {

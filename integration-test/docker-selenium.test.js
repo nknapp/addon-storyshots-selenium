@@ -12,7 +12,6 @@ const tunnelPromise = reverseTunnel({
 });
 
 beforeAll(async () => (await tunnelPromise).start());
-
 afterAll(async () => (await tunnelPromise).stop().catch(console.error));
 
 initStoryshots({
@@ -34,7 +33,7 @@ initStoryshots({
 				},
 			},
 		],
-		host: "localhost",
-		port: 9009,
+		storybookUrl: "http://localhost:9009",
+		snapshotDirectory: __filename + "-snapshots",
 	}),
 });
