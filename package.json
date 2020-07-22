@@ -35,7 +35,7 @@
     "thought": "thought run -a",
     "changelog": "standard-changelog && git add CHANGELOG.md",
     "version": "npm run changelog && npm run thought",
-    "storybook": "start-storybook -p 9009",
+    "storybook": "start-storybook -p 9009 -s public",
     "build": "rimraf dist && babel src -s -d dist --ignore src/*.test.js"
   },
   "devDependencies": {
@@ -46,6 +46,7 @@
     "babel-cli": "^6.26.0",
     "babel-jest": "^26.1.0",
     "babel-loader": "^8.1.0",
+    "browserstack-local": "^1.4.5",
     "child-service": "^2.0.2",
     "chisel-tunnel": "^1.0.1",
     "eslint": "^7.4.0",
@@ -57,11 +58,14 @@
     "rimraf": "^3.0.2",
     "standard-changelog": "^2.0.24",
     "thought": "4",
-    "thought-plugin-jsdoc": "^2.0.0"
+    "thought-plugin-jsdoc": "^2.0.0",
+    "trace": "^3.1.1"
   },
   "dependencies": {
     "debug": "^4.1.1",
     "jest-image-snapshot": "^4.0.2",
+    "selenium-webdriver": "^4.0.0-alpha.7",
+    "sharp": "^0.25.4",
     "webdriver": "^6.1.17"
   },
   "peerDependencies": {

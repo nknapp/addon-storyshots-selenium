@@ -12,7 +12,6 @@ const tunnelPromise = reverseTunnel({
 });
 
 beforeAll(async () => (await tunnelPromise).start());
-
 afterAll(async () => (await tunnelPromise).stop().catch(console.error));
 
 initStoryshots({
@@ -34,7 +33,12 @@ initStoryshots({
 				},
 			},
 		],
-		host: "localhost",
-		port: 9009,
+		seleniumUrl: "http://localhost:24444/wd/hub",
+		storybookUrl: "http://localhost:9009",
+		beforeScreenshot() {
+			// Give the browser a chance to load the emoji font
+			return new Promise((resolve) => setTimeout(resolve, 2000));
+		},
+		snapshotDirectory: __filename + "-snapshots",
 	}),
 });
