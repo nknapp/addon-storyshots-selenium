@@ -58,7 +58,8 @@
     "rimraf": "^3.0.2",
     "standard-changelog": "^2.0.24",
     "thought": "4",
-    "thought-plugin-jsdoc": "^2.0.0"
+    "thought-plugin-jsdoc": "^2.0.0",
+    "trace": "^3.1.1"
   },
   "dependencies": {
     "debug": "^4.1.1",

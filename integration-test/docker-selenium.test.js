@@ -33,6 +33,7 @@ initStoryshots({
 				},
 			},
 		],
+		seleniumUrl: "http://localhost:24444/wd/hub",
 		storybookUrl: "http://localhost:9009",
 		snapshotDirectory: __filename + "-snapshots",
 	}),

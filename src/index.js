@@ -10,6 +10,8 @@ import path from "path";
  * @param {object[]} options.browsers a list of selenium browser definition (caps)
  * @param {string=} options.storybookUrl the where to reach storybook from the browser's point-of-view. Default: 'http://localhost:6006'
  * @param {string=} options.seleniumHost the hostname of the selenium server
+ * @param {number=} options.testTimeoutMillis test is aborted after this timeout
+ * @param {number=} options.setupTimeoutMillis setup is aborted after this timeout
  * @param {function(session, context, url):Promise<void>=} options.beforeScreenshot a function that is executed before taking a screenshot
  * @param {function(image, context):Promise<void>=} options.afterScreenshot a function that is executed after taking a screenshot
  * @param {function(context, url): object=} options.getMatchOptions a function that returns options for [jest-image-snapshot](https://github.com/americanexpress/jest-image-snapshot#%EF%B8%8F-api)
@@ -24,7 +26,9 @@ export function imageSnapshot(options) {
 		afterScreenshot: () => {},
 		getMatchOptions: () => {},
 		snapshotDirectory: path.join("src", "__image_snapshots_selenium__"),
-		seleniumHost: process.env.SELENIUM_HOST || "localhost",
+		seleniumUrl: process.env.SELENIUM_URL || "http://localhost:4444/wd/hub",
+		testTimeoutMillis: 10000,
+		setupTimeoutMillis: 60000,
 		...options,
 	};
 
@@ -33,6 +37,7 @@ export function imageSnapshot(options) {
 	async function testMethod(context) {
 		return runTest(context);
 	}
+	testMethod.timeout = optionsWithDefaults.testTimeoutMillis;
 
 	testMethod.beforeAll = async () => {
 		webdriverTargets = await Promise.all(
@@ -40,15 +45,28 @@ export function imageSnapshot(options) {
 				return {
 					browserId: browser.id,
 					driver: new webdriver.Builder()
-						.usingServer("http://localhost:24444/wd/hub")
+						.usingServer(optionsWithDefaults.seleniumUrl)
 						.withCapabilities(browser.capabilities)
 						.build(),
 				};
 			})
 		);
 	};
+	testMethod.beforeAll.timeout = optionsWithDefaults.setupTimeoutMillis;
 
-	testMethod.beforeAll.timeout = 60000;
+	testMethod.afterAll = async () => {
+		if (webdriverTargets != null) {
+			await Promise.all(
+				webdriverTargets.map(async (webdriverTarget) => {
+					try {
+						await webdriverTarget.driver.quit();
+					} catch (error) {
+						console.error(error);
+					}
+				})
+			);
+		}
+	};
 
 	async function runTest(context) {
 		await Promise.all(
@@ -69,21 +87,6 @@ export function imageSnapshot(options) {
 			})
 		);
 	}
-
-	testMethod.afterAll = async () => {
-		if (webdriverTargets != null) {
-			await Promise.all(
-				webdriverTargets.map(async (webdriverTarget) => {
-					try {
-						await webdriverTarget.driver.quit();
-					} catch (error) {
-						console.error(error);
-					}
-				})
-			);
-		}
-	};
-	testMethod.timeout = 10000;
 
 	return testMethod;
 }
