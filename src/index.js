@@ -69,23 +69,34 @@ export function imageSnapshot(options) {
 	};
 
 	async function runTest(context) {
+		const exceptions = [];
 		await Promise.all(
 			webdriverTargets.map(async ({ browserId, driver }) => {
 				await forEachSequential(optionsWithDefaults.sizes, async (size) => {
-					await createSnapshot({
-						size,
-						driver,
-						context,
-						browserId,
-						storybookUrl: optionsWithDefaults.storybookUrl,
-						beforeScreenshot: optionsWithDefaults.beforeScreenshot,
-						afterScreenshot: optionsWithDefaults.afterScreenshot,
-						getMatchOptions: optionsWithDefaults.getMatchOptions,
-						snapshotDirectory: optionsWithDefaults.snapshotDirectory,
-					});
+					try {
+						await createSnapshot({
+							size,
+							driver,
+							context,
+							browserId,
+							storybookUrl: optionsWithDefaults.storybookUrl,
+							beforeScreenshot: optionsWithDefaults.beforeScreenshot,
+							afterScreenshot: optionsWithDefaults.afterScreenshot,
+							getMatchOptions: optionsWithDefaults.getMatchOptions,
+							snapshotDirectory: optionsWithDefaults.snapshotDirectory,
+						});
+					} catch (error) {
+						exceptions.push(error);
+					}
 				});
 			})
 		);
+		if (exceptions.length > 0) {
+			console.log(
+				`Found ${exceptions.length} errors during test execution. Rethrowing the first one`
+			);
+			throw exceptions[0];
+		}
 	}
 
 	return testMethod;
