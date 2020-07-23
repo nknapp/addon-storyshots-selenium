@@ -35,6 +35,10 @@ initStoryshots({
 		],
 		seleniumUrl: "http://localhost:24444/wd/hub",
 		storybookUrl: "http://localhost:9009",
+		beforeScreenshot() {
+			// Give the browser a chance to load the emoji font
+			return new Promise((resolve) => setTimeout(resolve, 500));
+		},
 		snapshotDirectory: __filename + "-snapshots",
 	}),
 });

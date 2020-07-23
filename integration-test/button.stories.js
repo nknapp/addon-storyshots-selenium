@@ -1,10 +1,12 @@
 /* istanbul ignore file */
+
 export default { title: "Button" };
 
 export const withText = () => '<button class="btn">Hello World</button>';
 
 export const withEmoji = () => {
 	const button = document.createElement("button");
+	button.className = "emoji";
 	button.innerText = "😀 😎 👍 💯";
 	return button;
 };
