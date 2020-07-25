@@ -36,20 +36,25 @@
     "changelog": "standard-changelog && git add CHANGELOG.md",
     "version": "npm run changelog && npm run thought",
     "storybook": "start-storybook -p 9009 -s public",
-    "build": "rimraf dist && babel src -s -d dist --ignore src/*.test.js"
+    "build": "tsc dist && babel src -s -d dist --ignore src/*.test.js"
   },
   "devDependencies": {
     "@babel/core": "^7.10.4",
     "@babel/preset-env": "^7.10.4",
+    "@babel/preset-typescript": "^7.10.4",
     "@storybook/addon-storyshots": "^5.3.19",
     "@storybook/html": "^5.3.19",
+    "@types/node": "^14.0.26",
+    "@types/selenium-webdriver": "^4.0.9",
+    "@typescript-eslint/eslint-plugin": "^3.7.0",
+    "@typescript-eslint/parser": "^3.7.0",
     "babel-cli": "^6.26.0",
     "babel-jest": "^26.1.0",
     "babel-loader": "^8.1.0",
     "browserstack-local": "^1.4.5",
     "child-service": "^2.0.2",
     "chisel-tunnel": "^1.0.1",
-    "eslint": "^7.4.0",
+    "eslint": "^7.5.0",
     "eslint-config-prettier": "^6.7.0",
     "husky": ">=4",
     "jest": "25",
@@ -59,9 +64,12 @@
     "standard-changelog": "^2.0.24",
     "thought": "4",
     "thought-plugin-jsdoc": "^2.0.0",
-    "trace": "^3.1.1"
+    "trace": "^3.1.1",
+    "typescript": "^3.9.7"
   },
   "dependencies": {
+    "@types/jest-image-snapshot": "^3.1.0",
+    "@types/sharp": "^0.25.1",
     "debug": "^4.1.1",
     "jest-image-snapshot": "^4.0.2",
     "selenium-webdriver": "^4.0.0-alpha.7",
@@ -83,8 +91,8 @@
   "jest": {
     "rootDir": ".",
     "testMatch": [
-      "**/src/**/*.test.js",
-      "**/integration-test/**/*.test.js"
+      "**/src/**/*.test.ts",
+      "**/integration-test/**/*.test.ts"
     ],
     "coverageThreshold": {
       "global": {

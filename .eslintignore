@@ -1,3 +1,4 @@
 node_modules/
 !.thought/**/*.js
 /dist
+src/**/*.js

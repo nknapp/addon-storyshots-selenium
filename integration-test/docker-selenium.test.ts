@@ -1,6 +1,6 @@
 import initStoryshots from "@storybook/addon-storyshots";
 import { reverseTunnel } from "./test-utils/reverse-tunnel";
-import { imageSnapshot } from "../src/index";
+import { imageSnapshot, waitMillis } from "../src/index";
 
 // Storybook must already be running on port 9009
 const remoteTunnelPort = 9009;
@@ -35,10 +35,6 @@ initStoryshots({
 		],
 		seleniumUrl: "http://localhost:24444/wd/hub",
 		storybookUrl: "http://localhost:9009",
-		beforeScreenshot() {
-			// Give the browser a chance to load the emoji font
-			return new Promise((resolve) => setTimeout(resolve, 2000));
-		},
 		snapshotDirectory: __filename + "-snapshots",
 	}),
 });
