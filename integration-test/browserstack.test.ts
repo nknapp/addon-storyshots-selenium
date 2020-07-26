@@ -1,6 +1,6 @@
 /* eslint-env jest */
 import initStoryshots from "@storybook/addon-storyshots";
-import { imageSnapshot } from "../src/index";
+import { imageSnapshot, waitMillis } from "../src/index";
 import browserstack from "browserstack-local";
 
 import "trace";
@@ -13,7 +13,7 @@ const username = process.env.BROWSER_STACK_USERNAME;
 const browserstackURL = `https://${username}:${key}@hub-cloud.browserstack.com/wd/hub`;
 
 const start = promisify(browserstackLocal.start).bind(browserstackLocal);
-beforeAll(async () => start({ key: key, force: true }));
+beforeAll(async () => start({ key: key }));
 
 const stop = promisify(browserstackLocal.stop).bind(browserstackLocal);
 afterAll(async () => stop);
@@ -49,6 +49,7 @@ initStoryshots({
 		seleniumUrl: browserstackURL,
 		storybookUrl: "http://localhost:9009",
 		snapshotDirectory: __filename + "-snapshots",
+		beforeFirstScreenshot: waitMillis(5000),
 		testTimeoutMillis: 30000,
 	}),
 });

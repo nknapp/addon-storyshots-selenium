@@ -1,3 +1,4 @@
 module.exports = {
-	stories: ["../integration-test/**/*.stories.[tj]s"],
+	addons: ["@storybook/preset-typescript"],
+	stories: ["../integration-test/**/*.stories.ts"],
 };
