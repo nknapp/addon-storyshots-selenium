@@ -1,12 +1,13 @@
 /* eslint-env jest */
 import initStoryshots from "@storybook/addon-storyshots";
-import { imageSnapshot, waitMillis } from "../src";
+import { doNothing, imageSnapshot, waitMillis } from "../src";
 import browserstack from "browserstack-local";
 import { promisify } from "util";
 
 if (process.env.BROWSERSTACK_ACCESS_KEY == null || process.env.BROWSERSTACK_USERNAME == null) {
 	it.skip(
-		"if you want to run tests with browserstack, please set the environment variables BROWSERSTACK_USERNAME and BROWSERSTACK_ACCESS_KEY"
+		"if you want to run tests with browserstack, please set the environment variables BROWSERSTACK_USERNAME and BROWSERSTACK_ACCESS_KEY",
+		doNothing()
 	);
 } else {
 	const browserstackLocal = new browserstack.Local();

@@ -1,5 +1,6 @@
 import { RenderTree } from "@storybook/addon-storyshots/dist/frameworks/Loader";
 import { MatchImageSnapshotOptions } from "jest-image-snapshot";
+import { WebDriver } from "selenium-webdriver";
 
 export interface LifeCycleMethod {
 	(): Promise<void>;
@@ -16,19 +17,31 @@ export interface TestMethod {
 /**
  * String of the form "1000x800"
  */
-export type WidthXHeight = string;
+export type WidthXHeightString = string;
 
-export type BeforeScreenshotsFunction = ({
-	driver: WebDriver,
-	context: any,
-	screenshotUrl: string,
-}) => Promise<void>;
+export interface WidthAndHeight {
+	width: number;
+	height: number;
+}
 
-export type AfterEachScreenshotFunction = ({ screenshot: Buffer, context: any }) => Promise<void>;
+interface BeforeScreenshotsOptions {
+	driver: WebDriver;
+	context: StorybookContext | any;
+	screenshotUrl: string;
+}
+
+export type BeforeScreenshotsFunction = (options: BeforeScreenshotsOptions) => Promise<void>;
+
+interface AfterEachScreenshotOptions {
+	context: StorybookContext | any;
+	screenshot: Buffer;
+}
+export type AfterEachScreenshotFunction = (options: AfterEachScreenshotOptions) => Promise<void>;
 
 export type GetMatchOptionsFunction = (
-	context: any,
-	screenshotUrl: string
+	context: StorybookContext | any,
+	screenshotUrl: string,
+	size: WidthAndHeight
 ) => Promise<MatchImageSnapshotOptions | void> | void;
 
 export interface BrowserSpecification {
@@ -41,7 +54,7 @@ export interface RequiredImageSnapshotOptions {
 }
 
 export interface OptionalImageSnapshotOptions {
-	sizes: WidthXHeight[];
+	sizes: WidthXHeightString[];
 	storybookUrl: string;
 	seleniumUrl: string;
 	testTimeoutMillis: number;
@@ -59,3 +72,11 @@ export type InternalImageSnapshotOptions = OptionalImageSnapshotOptions &
 
 export type ImageSnapshotOptions = Partial<OptionalImageSnapshotOptions> &
 	RequiredImageSnapshotOptions;
+
+export interface StorybookContext {
+	story: StorybookStory;
+}
+
+export interface StorybookStory {
+	id: string;
+}

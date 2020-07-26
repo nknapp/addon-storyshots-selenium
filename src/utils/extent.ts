@@ -1,9 +1,11 @@
-interface WidthAndHeight {
+import { WidthXHeightString } from "../types";
+
+export interface WidthAndHeight {
 	width: number;
 	height: number;
 }
 
-export class Extent {
+export class Extent implements WidthAndHeight {
 	readonly width: number;
 	readonly height: number;
 
@@ -26,13 +28,13 @@ export class Extent {
 	toString(): string {
 		return `${this.width}x${this.height}`;
 	}
-}
 
-export function extentFromSizeString(size: string): Extent {
-	const [width, height] = size.split("x").map(Number);
-	return extent({ width, height });
-}
+	static fromSizeString(size: WidthXHeightString): Extent {
+		const [width, height] = size.split("x").map(Number);
+		return Extent.of({ width, height });
+	}
 
-export function extent({ width, height }: WidthAndHeight): Extent {
-	return new Extent({ width, height });
+	static of({ width, height }: WidthAndHeight): Extent {
+		return new Extent({ width, height });
+	}
 }

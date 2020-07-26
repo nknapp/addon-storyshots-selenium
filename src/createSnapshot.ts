@@ -1,20 +1,21 @@
 /* global expect */
-import path from "path";
-import { forEachSequential } from "./foreach-sequential";
 import sharp from "sharp";
-import { getViewportSize, resizeStoryview, setupStoryview } from "./in-page-scripts";
+import { WebDriver } from "selenium-webdriver";
+import createDebug from "debug";
 import { toMatchImageSnapshot } from "jest-image-snapshot";
+
+import { forEachSequential } from "./foreach-sequential";
 import {
 	AfterEachScreenshotFunction,
 	BeforeScreenshotsFunction,
 	GetMatchOptionsFunction,
-	WidthXHeight,
+	WidthXHeightString,
 } from "./types";
-import createDebug from "debug";
 import { ResilientSeleniumAdapter } from "./resilient-selenium-adapter";
-import { createSectionDebug } from "./utils/internal-utils";
-import { Extent, extent, extentFromSizeString } from "./utils/extent";
-import { WebDriver } from "selenium-webdriver";
+import { computeScreenshotUrl, createSectionDebug } from "./utils/internal-utils";
+import { Extent } from "./utils/extent";
+import { getDefaultMatchOptions } from "./defaultOptions";
+import { WebDriverActions } from "./utils/webdriver-actions";
 
 expect.extend({ toMatchImageSnapshot });
 const sectionDebug = createSectionDebug(
@@ -22,7 +23,7 @@ const sectionDebug = createSectionDebug(
 );
 
 interface CreateSnapshotOptions {
-	sizes: WidthXHeight[];
+	sizes: WidthXHeightString[];
 	browserId: string;
 	webdriverAdapter: ResilientSeleniumAdapter;
 	context: any;
@@ -35,10 +36,18 @@ interface CreateSnapshotOptions {
 	onError: (error: Error) => void;
 }
 
-export async function createSnapshot({
-	afterEachScreenshot,
+export async function createSnapshot(options: CreateSnapshotOptions): Promise<void> {
+	const Photographer = createPhotographerClass(options);
+	await options.webdriverAdapter.doWithRetries(async (driver) => {
+		const photographer = new Photographer(driver);
+		await photographer.compareSizedSnapshots();
+	});
+}
+
+function createPhotographerClass({
 	beforeEachScreenshot,
 	beforeFirstScreenshot,
+	afterEachScreenshot,
 	browserId,
 	context,
 	getMatchOptions,
@@ -46,83 +55,111 @@ export async function createSnapshot({
 	sizes,
 	snapshotBaseDirectory,
 	storybookUrl,
-	webdriverAdapter,
-}: CreateSnapshotOptions): Promise<void> {
-	const screenshotUrl = `${storybookUrl}/iframe.html?id=${encodeURIComponent(context.story.id)}`;
+}: CreateSnapshotOptions) {
+	return class {
+		private readonly screenshotUrl: string;
+		private readonly webdriverActions: WebDriverActions;
+		private readonly driver: WebDriver;
+		private readonly requestedSizes: Extent[];
 
-	async function setupBrowserPage(driver: WebDriver) {
-		await withLog("setup blank page", () => driver.get("about:blank"));
-		await withLog("maximise browser window", () => driver.manage().window().maximize());
-		await withLog("setupStoryView", () => driver.executeScript(setupStoryview, screenshotUrl));
-	}
+		private viewportSize: Extent;
 
-	function withLog<T>(section: string, fn: () => T): T {
-		return sectionDebug(`${section} for browser "${browserId}`, fn);
-	}
+		constructor(driver: WebDriver) {
+			this.webdriverActions = new WebDriverActions(driver, browserId);
+			this.driver = driver;
 
-	async function extractStoryViewFromScreenshot(screenshot: Buffer, { width, height }) {
-		try {
-			return await sharp(screenshot)
+			this.screenshotUrl = computeScreenshotUrl(storybookUrl, context);
+			this.requestedSizes = sizes.map(Extent.fromSizeString);
+		}
+
+		async compareSizedSnapshots(): Promise<void> {
+			await this.webdriverActions.setupBlankPage();
+			await this.webdriverActions.maximiseBrowserWindow();
+			await this.webdriverActions.setupStoryviewIframe(this.screenshotUrl);
+			this.viewportSize = await this.webdriverActions.getViewportSize();
+
+			await this.beforeFirstScreenshot();
+
+			await forEachSequential(this.requestedSizes, async (size) => {
+				try {
+					return this.compareScreenshotOfSize(size);
+				} catch (error) {
+					onError(error);
+				}
+			});
+		}
+
+		async beforeFirstScreenshot() {
+			const driver = this.driver;
+			const screenshotUrl = this.screenshotUrl;
+			await this.withLog("beforeFirstScreenshot", () =>
+				beforeFirstScreenshot({ driver, context, screenshotUrl })
+			);
+		}
+
+		private async compareScreenshotOfSize(size: Extent): Promise<void> {
+			await this.webdriverActions.resizeStoryviewIframeTo(size);
+			await this.callBeforeEachScreenshotHook();
+			const screenshot = await this.takeScreenshotOfStoryViewIframe(size);
+			await this.callAfterEachScreenshotHook(screenshot);
+
+			return expect(screenshot).toMatchImageSnapshot({
+				...getDefaultMatchOptions(snapshotBaseDirectory, context, size, browserId),
+				...(await getMatchOptions(context, this.screenshotUrl, size)),
+			});
+		}
+
+		private async callBeforeEachScreenshotHook() {
+			await this.withLog("beforeEachScreenshot", () =>
+				beforeEachScreenshot({
+					driver: this.driver,
+					context: context,
+					screenshotUrl: this.screenshotUrl,
+				})
+			);
+		}
+
+		private async takeScreenshotOfStoryViewIframe(size: Extent): Promise<Buffer> {
+			const windowScreenshotBase64 = await this.webdriverActions.takeScreenshot();
+			const windowScreenshot = Buffer.from(windowScreenshotBase64, "base64");
+			const storyViewSize = this.computeActualSize(size, this.viewportSize);
+			return this.extractStoryViewFromScreenshot(windowScreenshot, storyViewSize);
+		}
+
+		private computeActualSize(requestedSize: Extent, viewportSize: Extent): Extent {
+			if (requestedSize.liesWithin(viewportSize)) {
+				return requestedSize;
+			}
+			console.error(
+				`Viewport is smaller than requested screenshot size for browser "${browserId}`,
+				{ viewportSize, requestedSize }
+			);
+			return requestedSize.intersection(viewportSize);
+		}
+
+		private async extractStoryViewFromScreenshot(screenshot: Buffer, { width, height }) {
+			try {
+				return await this.cropScreenshot(screenshot, width, height);
+			} catch (error) {
+				throw new Error(
+					`Error extracting screenshot of size ${width}x${height} for browser "${browserId}"`
+				);
+			}
+		}
+
+		private async callAfterEachScreenshotHook(screenshot) {
+			await this.withLog("afterEachScreenshot", () => afterEachScreenshot({ screenshot, context }));
+		}
+
+		private cropScreenshot(screenshot: Buffer, width, height) {
+			return sharp(screenshot)
 				.extract({ left: 0, top: 0, width, height })
 				.png({ compressionLevel: 9 })
 				.toBuffer();
-		} catch (error) {
-			throw new Error(
-				`Error extracting screenshot of size ${width}x${height} for browser "${browserId}"`
-			);
 		}
-	}
 
-	function computeActualSize(requestedSize: Extent, viewportSize: Extent) {
-		if (requestedSize.liesWithin(viewportSize)) {
-			return requestedSize;
+		private withLog<T>(section: string, fn: () => T): T {
+			return sectionDebug(`${section} for browser "${browserId}`, fn);
 		}
-		console.error(`Viewport is smaller than requested screenshot size for browser "${browserId}`, {
-			viewportSize,
-			requestedSize,
-		});
-		return requestedSize.intersection(viewportSize);
-	}
-
-	async function takeScreenshot(driver: WebDriver, requestedSize: Extent, viewportSize: Extent) {
-		const screenshotBase64 = await withLog("take screenshot", () => driver.takeScreenshot());
-		const screenshot = Buffer.from(screenshotBase64, "base64");
-		const storyViewSize = computeActualSize(requestedSize, viewportSize);
-
-		return extractStoryViewFromScreenshot(screenshot, storyViewSize);
-	}
-	await webdriverAdapter.doWithRetries(async (driver) => {
-		await setupBrowserPage(driver);
-		const viewportSize = await withLog("get viewport size", async () => {
-			return extent(await driver.executeScript(getViewportSize));
-		});
-
-		await withLog("beforeFirstScreenshot", () =>
-			beforeFirstScreenshot({ driver, context, screenshotUrl })
-		);
-
-		await forEachSequential(sizes, async (size) => {
-			try {
-				const requestedSize = extentFromSizeString(size);
-
-				await withLog(`resize storyView to ${size}`, () =>
-					driver.executeScript(resizeStoryview, requestedSize.width, requestedSize.height)
-				);
-				await withLog("beforeEachScreenshot", () =>
-					beforeEachScreenshot({ driver, context, screenshotUrl })
-				);
-				const screenshot = await takeScreenshot(driver, requestedSize, viewportSize);
-
-				await afterEachScreenshot({ screenshot, context: context });
-				const directory = path.join(snapshotBaseDirectory, context.story.id);
-				return expect(screenshot).toMatchImageSnapshot({
-					customSnapshotsDir: directory,
-					customSnapshotIdentifier: `${context.story.id}-${size}-${browserId}`,
-					...getMatchOptions(context, screenshotUrl),
-				});
-			} catch (error) {
-				onError(error);
-			}
-		});
-	});
+	};
 }

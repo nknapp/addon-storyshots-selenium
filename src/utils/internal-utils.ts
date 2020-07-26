@@ -1,3 +1,5 @@
+import { StorybookContext } from "../types";
+
 export function firstNonNull<T>(...args: T[]): T {
 	return args.find((item) => item != null);
 }
@@ -56,4 +58,8 @@ export function createSectionDebug(debug: DebugLite): SectionDebug {
 	} else {
 		return (section, fn) => fn();
 	}
+}
+
+export function computeScreenshotUrl(storybookUrl: string, context: StorybookContext): string {
+	return `${storybookUrl}/iframe.html?id=${encodeURIComponent(context.story.id)}`;
 }
