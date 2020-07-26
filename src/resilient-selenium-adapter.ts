@@ -1,11 +1,13 @@
 import { BrowserSpecification } from "./types";
 import webdriver, { error, WebDriver } from "selenium-webdriver";
 import createDebug from "debug";
+import { createSectionDebug } from "./utils/internal-utils";
 
 type WebDriverError = error.WebDriverError;
 const WebDriverError = error.WebDriverError;
 
-const debug = createDebug("addon-storyshot-selenium:resilient-selenium-adapter");
+const debug = createDebug("addon-storyshots-selenium:resilient-selenium-adapter");
+const sectionDebug = createSectionDebug(debug);
 
 export class ResilientSeleniumAdapter {
 	private readonly browser: BrowserSpecification;
@@ -28,14 +30,10 @@ export class ResilientSeleniumAdapter {
 
 		let lastError: WebDriverError | null = null;
 		for (let i = 1; i <= this.retries; i++) {
-			debug(`Executing function (${i}time)`);
 			try {
-				const result = await fn(this.driver);
-				debug(`Done executing function (${i}time)`);
-				return result;
+				return await sectionDebug(`execute function (attempt ${i})`, () => fn(this.driver));
 			} catch (error) {
 				if (!(error instanceof WebDriverError)) {
-					debug("Non-WebdriverError found", error);
 					throw error;
 				}
 				debug("WebdriverError found, retrying soon", error);
@@ -73,9 +71,7 @@ export class ResilientSeleniumAdapter {
 
 	public async close(): Promise<void> {
 		if (this.driver) {
-			debug(`Stopping driver for "${this.browserId}"`);
-			await this.driver.quit();
-			debug(`Done stopping driver for "${this.browserId}"`);
+			await sectionDebug(`Stopping driver for "${this.browserId}"`, () => this.driver.quit());
 			this.driver = null;
 		}
 	}

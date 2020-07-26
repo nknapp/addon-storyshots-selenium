@@ -1,26 +1,25 @@
 {
-  "compilerOptions": {
-    "rootDir": "./src",
-    "types": ["webpack-env", "node", "jest"],
-    "declaration": true,
-    "baseUrl": ".",
-    "incremental": false,
-    "noImplicitAny": false,
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-    "jsx": "react",
-    "module": "commonjs",
-    "skipDefaultLibCheck": true,
-    "skipLibCheck": true,
-    "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true,
-    "target": "ES5",
-    "lib": ["es2020", "dom"]
-  },
-  "include": [
-    "src/**/*"
-  ],
-  "exclude": [
-    "src/integration-tests/**/*"
-  ]
+	"compilerOptions": {
+		"rootDir": ".",
+		"types": ["webpack-env", "node", "jest"],
+		"declaration": true,
+		"baseUrl": ".",
+		"incremental": false,
+		"noImplicitAny": false,
+		"experimentalDecorators": true,
+		"emitDecoratorMetadata": true,
+		"jsx": "react",
+		"module": "commonjs",
+		"skipDefaultLibCheck": true,
+		"skipLibCheck": true,
+		"allowSyntheticDefaultImports": true,
+		"esModuleInterop": true,
+		"target": "ES5",
+		"lib": ["es2020", "dom"],
+		"paths": {
+			"addon-storyshot-selenium": ["/src/"]
+		}
+	},
+	"include": ["src/**/*"],
+	"exclude": ["src/integration-tests/**/*"]
 }

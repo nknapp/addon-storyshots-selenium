@@ -1,6 +1,6 @@
 import initStoryshots from "@storybook/addon-storyshots";
 import { reverseTunnel } from "./test-utils/reverse-tunnel";
-import { imageSnapshot, waitMillis } from "../src/index";
+import { imageSnapshot } from "../src";
 
 // Storybook must already be running on port 9009
 const remoteTunnelPort = 9009;
@@ -35,6 +35,6 @@ initStoryshots({
 		],
 		seleniumUrl: "http://localhost:24444/wd/hub",
 		storybookUrl: "http://localhost:9009",
-		snapshotDirectory: __filename + "-snapshots",
+		snapshotBaseDirectory: __filename + "-snapshots",
 	}),
 });

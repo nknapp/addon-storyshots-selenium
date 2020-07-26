@@ -18,3 +18,7 @@ export function resizeStoryview(width, height) {
 	storyview.width = String(width);
 	storyview.height = String(height);
 }
+
+export function getViewportSize() {
+	return { width: window.innerWidth, height: window.innerHeight };
+}

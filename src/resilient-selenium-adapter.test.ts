@@ -1,7 +1,4 @@
 import { ResilientSeleniumAdapter } from "./resilient-selenium-adapter";
-import { error } from "selenium-webdriver";
-
-require("trace");
 
 describe("the resilient-selenium-adapter", () => {
 	let adapter: ResilientSeleniumAdapter | null = null;

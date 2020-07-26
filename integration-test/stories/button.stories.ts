@@ -9,16 +9,16 @@ export default {
 	},
 };
 
-export const withText = () => '<button class="btn">Hello World</button>';
+export const withText = (): string => '<button class="btn">Hello World</button>';
 
-export const withEmoji = () => {
+export const withEmoji = (): HTMLElement => {
 	const button = document.createElement("button");
 	button.className = "emoji";
 	button.innerText = "😀 😎 👍 💯";
 	return button;
 };
 
-export const browserInfo = () => {
+export const browserInfo = (): HTMLElement => {
 	const button = document.createElement("button");
 	const updateButtonLabel = () => {
 		button.innerText =
@@ -35,7 +35,7 @@ browserInfo.story = {
 	},
 };
 
-export const responsive = () => {
+export const responsive = (): HTMLElement => {
 	const styles = document.createElement("style");
 	styles.innerHTML = `
 #responsiveStyling {

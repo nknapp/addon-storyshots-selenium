@@ -7,7 +7,7 @@ export default {
 	},
 };
 
-export const Boundaries = () => {
+export const Boundaries = (): HTMLElement => {
 	const div = document.createElement("div");
 	div.style.position = "absolute";
 	div.className = "boundary-checker";

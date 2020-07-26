@@ -1,6 +1,5 @@
 import { RenderTree } from "@storybook/addon-storyshots/dist/frameworks/Loader";
 import { MatchImageSnapshotOptions } from "jest-image-snapshot";
-import { ICapability } from "selenium-webdriver/lib/capabilities";
 
 export interface LifeCycleMethod {
 	(): Promise<void>;
@@ -52,7 +51,7 @@ export interface OptionalImageSnapshotOptions {
 	beforeEachScreenshot: BeforeScreenshotsFunction;
 	afterEachScreenshot: AfterEachScreenshotFunction;
 	getMatchOptions: GetMatchOptionsFunction;
-	snapshotDirectory: string;
+	snapshotBaseDirectory: string;
 }
 
 export type InternalImageSnapshotOptions = OptionalImageSnapshotOptions &

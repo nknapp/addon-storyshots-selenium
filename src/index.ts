@@ -1,35 +1,14 @@
-import webdriver, { WebDriver } from "selenium-webdriver";
 import { createSnapshot } from "./createSnapshot";
-import path from "path";
-import {
-	BrowserSpecification,
-	ImageSnapshotOptions,
-	InternalImageSnapshotOptions,
-	OptionalImageSnapshotOptions,
-	TestMethod,
-} from "./types";
+import { ImageSnapshotOptions, InternalImageSnapshotOptions, TestMethod } from "./types";
 
-import { doNothing, requireKeyInOptions, waitMillis } from "./utils";
 import createDebug from "debug";
 import { ResilientSeleniumAdapter } from "./resilient-selenium-adapter";
+import { defaultOptions } from "./defaultOptions";
+import { createSectionDebug, firstNonNull, requireKeyInOptions } from "./utils/internal-utils";
 
-export { doNothing, waitMillis } from "./utils";
+export { doNothing, waitMillis } from "./utils/public-utils";
 
-const debug = createDebug("addon-storyshot-selenium:index");
-
-const defaultOptions: OptionalImageSnapshotOptions = {
-	sizes: ["1024x768"],
-	storybookUrl: "http://localhost:6006",
-	beforeFirstScreenshot: waitMillis(1000),
-	beforeEachScreenshot: waitMillis(200),
-	afterEachScreenshot: doNothing(),
-	getMatchOptions: doNothing(),
-	snapshotDirectory: path.join("src", "__image_snapshots_selenium__"),
-	seleniumUrl: process.env.SELENIUM_URL || "http://localhost:4444/wd/hub",
-	testTimeoutMillis: 60000,
-	setupTimeoutMillis: 60000,
-	teardownTimeoutMillis: 60000,
-};
+const sectionDebug = createSectionDebug(createDebug("addon-storyshots-selenium:index-trace"));
 
 export function imageSnapshot(options: ImageSnapshotOptions): TestMethod {
 	requireKeyInOptions(options, "browsers");
@@ -40,26 +19,20 @@ export function imageSnapshot(options: ImageSnapshotOptions): TestMethod {
 
 	let webdriverAdapters: ResilientSeleniumAdapter[];
 
-	async function setupSeleniumWebdriver() {
-		debug("setup");
+	async function setupSeleniumWebdrivers() {
 		webdriverAdapters = optionsWithDefaults.browsers.map(
 			(browser) => new ResilientSeleniumAdapter(optionsWithDefaults.seleniumUrl, browser)
 		);
 	}
 
-	async function closeSeleniumWebdriver() {
-		debug("close");
+	async function closeSeleniumWebdrivers() {
 		if (webdriverAdapters != null) {
 			await Promise.all(
-				webdriverAdapters.map(async (seleniumAdapter) => {
-					try {
-						debug(`shutting down browser ${seleniumAdapter.browserId}`);
-						await seleniumAdapter.close();
-						debug(`done shutting down browser ${seleniumAdapter.browserId}`);
-					} catch (error) {
-						console.error(`error shutting down browser ${seleniumAdapter.browserId}`, error);
-					}
-				})
+				webdriverAdapters.map(async (seleniumAdapter) =>
+					sectionDebug(`shutting down browser ${seleniumAdapter.browserId}`, () =>
+						seleniumAdapter.close()
+					)
+				)
 			);
 		}
 	}
@@ -70,7 +43,7 @@ export function imageSnapshot(options: ImageSnapshotOptions): TestMethod {
 		await Promise.all(
 			webdriverAdapters.map(async (webdriverAdapter) => {
 				await createSnapshot({
-					sizes: storySpecificSizes != null ? storySpecificSizes : optionsWithDefaults.sizes,
+					sizes: firstNonNull(storySpecificSizes, optionsWithDefaults.sizes),
 					browserId: webdriverAdapter.browserId,
 					webdriverAdapter,
 					context,
@@ -79,7 +52,7 @@ export function imageSnapshot(options: ImageSnapshotOptions): TestMethod {
 					beforeEachScreenshot: optionsWithDefaults.beforeEachScreenshot,
 					afterEachScreenshot: optionsWithDefaults.afterEachScreenshot,
 					getMatchOptions: optionsWithDefaults.getMatchOptions,
-					snapshotDirectory: optionsWithDefaults.snapshotDirectory,
+					snapshotBaseDirectory: optionsWithDefaults.snapshotBaseDirectory,
 					onError: (error) => exceptions.push(error),
 				});
 			})
@@ -94,12 +67,12 @@ export function imageSnapshot(options: ImageSnapshotOptions): TestMethod {
 	}
 
 	const testMethod: TestMethod = runTest;
-	testMethod.timeout = optionsWithDefaults.testTimeoutMillis * optionsWithDefaults.sizes.length;
+	testMethod.timeout = optionsWithDefaults.testTimeoutMillis;
 
-	testMethod.beforeAll = setupSeleniumWebdriver;
+	testMethod.beforeAll = () => sectionDebug("setup selenium webdrivers", setupSeleniumWebdrivers);
 	testMethod.beforeAll.timeout = optionsWithDefaults.setupTimeoutMillis;
 
-	testMethod.afterAll = closeSeleniumWebdriver;
+	testMethod.afterAll = () => sectionDebug("close selenium webdrivers", closeSeleniumWebdrivers);
 	testMethod.afterAll.timeout = optionsWithDefaults.teardownTimeoutMillis;
 
 	return testMethod;

@@ -1,7 +1,15 @@
 import { downloadChisel } from "chisel-tunnel";
 import { ChildService } from "child-service";
 
-export async function reverseTunnel({ host, tunnelSpec }) {
+interface ReverseTunnelOptions {
+	host: string;
+	tunnelSpec: string;
+}
+
+export async function reverseTunnel({
+	host,
+	tunnelSpec,
+}: ReverseTunnelOptions): Promise<ChildService> {
 	const chiselExecutable = await downloadChisel("^1.6.0");
 
 	return new ChildService({
