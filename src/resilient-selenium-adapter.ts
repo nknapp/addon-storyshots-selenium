@@ -1,7 +1,6 @@
 import { BrowserSpecification } from "./types";
 import webdriver, { error, WebDriver } from "selenium-webdriver";
 import createDebug from "debug";
-import { waitMillis } from "./utils";
 
 type WebDriverError = error.WebDriverError;
 const WebDriverError = error.WebDriverError;
@@ -13,7 +12,6 @@ export class ResilientSeleniumAdapter {
 	private readonly seleniumUrl: string;
 	private driver?: WebDriver;
 	private readonly retries;
-	private executionSinceRecreate: number;
 	public readonly browserId: string;
 
 	constructor(seleniumUrl: string, browser: BrowserSpecification) {
@@ -21,18 +19,12 @@ export class ResilientSeleniumAdapter {
 		this.browser = browser;
 		this.browserId = browser.id;
 		this.retries = 3;
-		this.executionSinceRecreate = 0;
 	}
 
 	async doWithRetries<R>(fn: (driver: WebDriver) => Promise<R>): Promise<R> {
 		if (!this.driver) {
 			this.driver = this.createDriver();
 		}
-		this.executionSinceRecreate++;
-		// if (this.executionSinceRecreate > 3) {
-		// 	debug(`Recreating after ${this.executionSinceRecreate} executions, just to be sure.`)
-		// 	await this.recreateDriver();
-		// }
 
 		let lastError: WebDriverError | null = null;
 		for (let i = 1; i <= this.retries; i++) {
@@ -73,7 +65,6 @@ export class ResilientSeleniumAdapter {
 	}
 
 	private createDriver() {
-		this.executionSinceRecreate = 0;
 		return new webdriver.Builder()
 			.usingServer(this.seleniumUrl)
 			.withCapabilities(this.browser.capabilities)
