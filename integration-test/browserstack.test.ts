@@ -13,7 +13,7 @@ const username = process.env.BROWSER_STACK_USERNAME;
 const browserstackURL = `https://${username}:${key}@hub-cloud.browserstack.com/wd/hub`;
 
 const start = promisify(browserstackLocal.start).bind(browserstackLocal);
-beforeAll(async () => start({ key: key }));
+beforeAll(async () => start({ key: key, force: true }));
 
 const stop = promisify(browserstackLocal.stop).bind(browserstackLocal);
 afterAll(async () => stop);
