@@ -1,3 +1,5 @@
+import { Debugger } from "debug";
+
 type VoidAsyncFunction = () => Promise<void>;
 
 export function waitMillis(millis: number): VoidAsyncFunction {

@@ -2,6 +2,7 @@ import webdriver, { WebDriver } from "selenium-webdriver";
 import { createSnapshot } from "./createSnapshot";
 import path from "path";
 import {
+	BrowserSpecification,
 	ImageSnapshotOptions,
 	InternalImageSnapshotOptions,
 	OptionalImageSnapshotOptions,
@@ -9,8 +10,12 @@ import {
 } from "./types";
 
 import { doNothing, requireKeyInOptions, waitMillis } from "./utils";
+import createDebug from "debug";
+import { ResilientSeleniumAdapter } from "./resilient-selenium-adapter";
 
 export { doNothing, waitMillis } from "./utils";
+
+const debug = createDebug("addon-storyshot-selenium:index");
 
 const defaultOptions: OptionalImageSnapshotOptions = {
 	sizes: ["1024x768"],
@@ -21,7 +26,7 @@ const defaultOptions: OptionalImageSnapshotOptions = {
 	getMatchOptions: doNothing(),
 	snapshotDirectory: path.join("src", "__image_snapshots_selenium__"),
 	seleniumUrl: process.env.SELENIUM_URL || "http://localhost:4444/wd/hub",
-	testTimeoutMillis: 10000,
+	testTimeoutMillis: 60000,
 	setupTimeoutMillis: 60000,
 	teardownTimeoutMillis: 60000,
 };
@@ -33,37 +38,42 @@ export function imageSnapshot(options: ImageSnapshotOptions): TestMethod {
 		...options,
 	};
 
-	interface WebdriverTarget {
-		browserId: string;
-		driver: WebDriver;
-	}
-
-	let webdriverTargets: WebdriverTarget[];
+	let webdriverAdapters: ResilientSeleniumAdapter[];
 
 	async function setupSeleniumWebdriver() {
-		webdriverTargets = await Promise.all(
-			optionsWithDefaults.browsers.map(async (browser) => {
-				return {
-					browserId: browser.id,
-					driver: new webdriver.Builder()
-						.usingServer(optionsWithDefaults.seleniumUrl)
-						.withCapabilities(browser.capabilities)
-						.build(),
-				};
-			})
+		debug("setup");
+		webdriverAdapters = optionsWithDefaults.browsers.map(
+			(browser) => new ResilientSeleniumAdapter(optionsWithDefaults.seleniumUrl, browser)
 		);
+	}
+
+	async function closeSeleniumWebdriver() {
+		debug("close");
+		if (webdriverAdapters != null) {
+			await Promise.all(
+				webdriverAdapters.map(async (seleniumAdapter) => {
+					try {
+						debug(`shutting down browser ${seleniumAdapter.browserId}`);
+						await seleniumAdapter.close();
+						debug(`done shutting down browser ${seleniumAdapter.browserId}`);
+					} catch (error) {
+						console.error(`error shutting down browser ${seleniumAdapter.browserId}`, error);
+					}
+				})
+			);
+		}
 	}
 
 	async function runTest(context) {
 		const storySpecificSizes = context.story.parameters?.storyshotSelenium?.sizes;
 		const exceptions = [];
 		await Promise.all(
-			webdriverTargets.map(async ({ browserId, driver }) => {
+			webdriverAdapters.map(async (webdriverAdapter) => {
 				await createSnapshot({
 					sizes: storySpecificSizes != null ? storySpecificSizes : optionsWithDefaults.sizes,
-					driver,
+					browserId: webdriverAdapter.browserId,
+					webdriverAdapter,
 					context,
-					browserId,
 					storybookUrl: optionsWithDefaults.storybookUrl,
 					beforeFirstScreenshot: optionsWithDefaults.beforeFirstScreenshot,
 					beforeEachScreenshot: optionsWithDefaults.beforeEachScreenshot,
@@ -75,24 +85,11 @@ export function imageSnapshot(options: ImageSnapshotOptions): TestMethod {
 			})
 		);
 		if (exceptions.length > 0) {
-			console.log(
+			console.error(
 				`Found ${exceptions.length} errors during test execution. Rethrowing the first one`
 			);
+			console.error(exceptions);
 			throw exceptions[0];
-		}
-	}
-
-	async function closeSeleniumWebdriver() {
-		if (webdriverTargets != null) {
-			await Promise.all(
-				webdriverTargets.map(async (webdriverTarget) => {
-					try {
-						await webdriverTarget.driver.quit();
-					} catch (error) {
-						console.error(error);
-					}
-				})
-			);
 		}
 	}
 

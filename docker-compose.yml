@@ -2,11 +2,15 @@ version: "3"
 services:
   selenium:
     image: knappmeier/selenium-with-tunnel
+    shm_size: '2gb'
     ports:
       - 2222:2222
       - 24444:24444
       - 5900:25900
     environment:
       - SEL_BROWSER_TIMEOUT_SECS=60
-      - MAX_SESSIONS=10
-      - SEL_RELEASE_TIMEOUT_SECS=30
+      - SEL_RELEASE_TIMEOUT_SECS=10
+      - MAX_INSTANCES=2
+      - MAX_SESSIONS=2
+      - SCREEN_WIDTH=1920
+      - SCREEN_HEIGHT=1080

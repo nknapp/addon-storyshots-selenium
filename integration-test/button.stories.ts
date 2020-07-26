@@ -82,7 +82,7 @@ button::after {
 responsive.story = {
 	parameters: {
 		storyshotSelenium: {
-			sizes: ["800x600", "320x640", "1280x1024"],
+			sizes: ["800x600", "320x640", "1024x768"],
 		},
 	},
 };

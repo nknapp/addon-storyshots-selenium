@@ -6,17 +6,17 @@ import browserstack from "browserstack-local";
 import "trace";
 
 const browserstackLocal = new browserstack.Local();
-const { promisify } = require("util");
-
-browserstackLocal.startPromised = promisify(browserstackLocal.start);
-browserstackLocal.stopPromised = promisify(browserstackLocal.stop);
+import { promisify } from "util";
 
 const key = process.env.BROWSER_STACK_KEY;
 const username = process.env.BROWSER_STACK_USERNAME;
-var browserstackURL = `https://${username}:${key}@hub-cloud.browserstack.com/wd/hub`;
+const browserstackURL = `https://${username}:${key}@hub-cloud.browserstack.com/wd/hub`;
 
-beforeAll(async () => browserstackLocal.startPromised({ key: key }));
-afterAll(async () => browserstackLocal.stopPromised());
+const start = promisify(browserstackLocal.start).bind(browserstackLocal);
+beforeAll(async () => start({ key: key }));
+
+const stop = promisify(browserstackLocal.stop).bind(browserstackLocal);
+afterAll(async () => stop);
 
 initStoryshots({
 	framework: "html",
@@ -31,26 +31,7 @@ initStoryshots({
 					os_version: "10",
 					browserName: "IE",
 					browser_version: "11.0",
-					"browserstack.local": true,
-				},
-			},
-			{
-				id: "chrome",
-				capabilities: {
-					os: "windows",
-					os_version: "10",
-					browserName: "chrome",
-					browser_version: "latest",
-					"browserstack.local": true,
-				},
-			},
-			{
-				id: "firefox",
-				capabilities: {
-					os: "windows",
-					os_version: "10",
-					browserName: "firefox",
-					browser_version: "latest",
+					resolution: "1920x1080",
 					"browserstack.local": true,
 				},
 			},
@@ -60,6 +41,7 @@ initStoryshots({
 					os: "os x",
 					browserName: "safari",
 					browser_version: "latest",
+					resolution: "1920x1080",
 					"browserstack.local": true,
 				},
 			},
@@ -67,10 +49,6 @@ initStoryshots({
 		seleniumUrl: browserstackURL,
 		storybookUrl: "http://localhost:9009",
 		snapshotDirectory: __filename + "-snapshots",
-		beforeScreenshot() {
-			// Give the browser a chance to load the emoji font
-			return new Promise((resolve) => setTimeout(resolve, 500));
-		},
 		testTimeoutMillis: 30000,
 	}),
 });
