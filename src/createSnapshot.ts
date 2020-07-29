@@ -16,7 +16,6 @@ import { computeScreenshotUrl, createSectionDebug } from "./utils/internal-utils
 import { Extent } from "./utils/extent";
 import { getDefaultMatchOptions } from "./defaultOptions";
 import { WebDriverActions } from "./utils/webdriver-actions";
-import { AssertionError } from "assert";
 
 expect.extend({ toMatchImageSnapshot });
 const sectionDebug = createSectionDebug(
