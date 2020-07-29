@@ -3,6 +3,7 @@ import initStoryshots from "@storybook/addon-storyshots";
 import { doNothing, imageSnapshot, waitMillis } from "../src";
 import browserstack from "browserstack-local";
 import { promisify } from "util";
+import { storybookStaticServer } from "./test-utils/server";
 
 if (process.env.BROWSERSTACK_ACCESS_KEY == null || process.env.BROWSERSTACK_USERNAME == null) {
 	it.skip(
@@ -21,6 +22,10 @@ if (process.env.BROWSERSTACK_ACCESS_KEY == null || process.env.BROWSERSTACK_USER
 
 	const stop = promisify(browserstackLocal.stop).bind(browserstackLocal);
 	afterAll(async () => stop);
+
+	const server = storybookStaticServer(9009);
+	beforeAll(async () => server.start());
+	afterAll(async () => server.stop().catch(console.error));
 
 	initStoryshots({
 		framework: "html",

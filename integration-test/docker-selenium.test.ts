@@ -1,6 +1,7 @@
 import initStoryshots from "@storybook/addon-storyshots";
 import { reverseTunnel } from "./test-utils/reverse-tunnel";
 import { imageSnapshot } from "../src";
+import { storybookStaticServer } from "./test-utils/server";
 
 // Storybook must already be running on port 9009
 const remoteTunnelPort = 9009;
@@ -13,6 +14,10 @@ const tunnelPromise = reverseTunnel({
 
 beforeAll(async () => (await tunnelPromise).start());
 afterAll(async () => (await tunnelPromise).stop().catch(console.error));
+
+const server = storybookStaticServer(storybookPort);
+beforeAll(async () => server.start());
+afterAll(async () => server.stop().catch(console.error));
 
 initStoryshots({
 	framework: "html",

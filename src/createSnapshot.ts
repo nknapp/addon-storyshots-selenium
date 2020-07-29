@@ -16,6 +16,7 @@ import { computeScreenshotUrl, createSectionDebug } from "./utils/internal-utils
 import { Extent } from "./utils/extent";
 import { getDefaultMatchOptions } from "./defaultOptions";
 import { WebDriverActions } from "./utils/webdriver-actions";
+import { AssertionError } from "assert";
 
 expect.extend({ toMatchImageSnapshot });
 const sectionDebug = createSectionDebug(
@@ -102,11 +103,14 @@ function createPhotographerClass({
 			await this.callBeforeEachScreenshotHook();
 			const screenshot = await this.takeScreenshotOfStoryViewIframe(size);
 			await this.callAfterEachScreenshotHook(screenshot);
-
-			return expect(screenshot).toMatchImageSnapshot({
-				...getDefaultMatchOptions(snapshotBaseDirectory, context, size, browserId),
-				...(await getMatchOptions(context, this.screenshotUrl, size)),
-			});
+			try {
+				return await expect(screenshot).toMatchImageSnapshot({
+					...getDefaultMatchOptions(snapshotBaseDirectory, context, size, browserId),
+					...(await getMatchOptions(context, this.screenshotUrl, size)),
+				});
+			} catch (error) {
+				throw new error.constructor(`For "${this.screenshotUrl}": ${error.message}`);
+			}
 		}
 
 		private async callBeforeEachScreenshotHook() {
