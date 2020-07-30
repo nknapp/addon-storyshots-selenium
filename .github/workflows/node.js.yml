@@ -37,12 +37,23 @@ jobs:
     - run: yarn install
     - run: yarn build-storybook
     - run: yarn test:jest
+
+    - run: yarn test:docker-selenium
     - name: Upload snapshots and diffs
       if: ${{ failure() }}
       uses: actions/upload-artifact@v2
       with:
-        name: snapshots
-        path: integration-test/*-snapshots
+        name: docker-selenium-snapshots-node-${{ matrix.node-version }}
+        path: integration-test/docker-selenium.test.ts-snapshots
+
+    - run: yarn test:browserstack
+    - name: Upload snapshots and diffs
+      if: ${{ failure() }}
+
+      uses: actions/upload-artifact@v2
+      with:
+        name: browserstack-snapshots-node-${{ matrix.node-version }}
+        path: integration-test/browserstack.test.ts-snapshots
     - run: docker-compose down
 
 
