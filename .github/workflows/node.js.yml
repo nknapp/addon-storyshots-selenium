@@ -35,6 +35,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: docker-compose up -d
     - run: yarn install
+    - run: yarn build-storybook
     - run: yarn test:jest
     - name: Upload snapshots and diffs
       if: ${{ failure() }}
