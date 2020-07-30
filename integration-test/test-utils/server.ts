@@ -19,10 +19,9 @@ export function storybookStaticServer(listenPort: number): StaticFileServer {
 			return Promise.race([successPromise, errorPromise]);
 		},
 		stop() {
-			const successPromise = new Promise<void>((resolve) => server.once("close", resolve));
-			const errorPromise = new Promise<void>((resolve, reject) => server.once("error", reject));
-			server.close();
-			return Promise.race([successPromise, errorPromise]);
+			return new Promise<void>((resolve, reject) =>
+				server.close((error: Error): void => (error ? reject(error) : resolve()))
+			);
 		},
 	};
 }
