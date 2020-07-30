@@ -7,13 +7,13 @@ import { storybookStaticServer } from "./test-utils/server";
 const remoteTunnelPort = 9009;
 const storybookPort = 9009;
 
-const tunnelPromise = reverseTunnel({
+const tunnel = reverseTunnel({
 	host: process.env.SELENIUM_HOST || "localhost",
 	tunnelSpec: `R:${remoteTunnelPort}:localhost:${storybookPort}`,
 });
 
-beforeAll(async () => (await tunnelPromise).start());
-afterAll(async () => (await tunnelPromise).stop().catch(console.error));
+beforeAll(async () => tunnel.start());
+afterAll(async () => tunnel.stop().catch(console.error));
 
 const server = storybookStaticServer(storybookPort);
 beforeAll(async () => server.start());

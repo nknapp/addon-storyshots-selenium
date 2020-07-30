@@ -6,14 +6,9 @@ interface ReverseTunnelOptions {
 	tunnelSpec: string;
 }
 
-export async function reverseTunnel({
-	host,
-	tunnelSpec,
-}: ReverseTunnelOptions): Promise<ChildService> {
-	const chiselExecutable = await downloadChisel("^1.6.0");
-
+export function reverseTunnel({ host, tunnelSpec }: ReverseTunnelOptions): ChildService {
 	return new ChildService({
-		command: chiselExecutable,
+		command: downloadChisel("^1.6.0"),
 		args: ["client", host + ":2222", tunnelSpec],
 		readyRegex: / Connected /,
 		listenOnStderr: true,

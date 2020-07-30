@@ -57,7 +57,7 @@
     "babel-jest": "^26.1.0",
     "babel-loader": "^8.1.0",
     "browserstack-local": "^1.4.5",
-    "child-service": "^2.0.2",
+    "child-service": "2.4.0",
     "chisel-tunnel": "^1.0.1",
     "eslint": "^7.5.0",
     "eslint-config-prettier": "^6.7.0",
