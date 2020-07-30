@@ -6,7 +6,7 @@ import { promisify } from "util";
 import { storybookStaticServer } from "./test-utils/server";
 
 if (process.env.BROWSERSTACK_ACCESS_KEY == null || process.env.BROWSERSTACK_USERNAME == null) {
-	it.skip(
+	console.warn(
 		"if you want to run tests with browserstack, please set the environment variables BROWSERSTACK_USERNAME and BROWSERSTACK_ACCESS_KEY",
 		doNothing()
 	);
@@ -21,9 +21,9 @@ if (process.env.BROWSERSTACK_ACCESS_KEY == null || process.env.BROWSERSTACK_USER
 	beforeAll(async () => start({ key: key }));
 
 	const stop = promisify(browserstackLocal.stop).bind(browserstackLocal);
-	afterAll(async () => stop);
+	afterAll(async () => stop());
 
-	const server = storybookStaticServer(9009);
+	const server = storybookStaticServer(9010);
 	beforeAll(async () => server.start());
 	afterAll(async () => server.stop().catch(console.error));
 
@@ -56,7 +56,7 @@ if (process.env.BROWSERSTACK_ACCESS_KEY == null || process.env.BROWSERSTACK_USER
 				},
 			],
 			seleniumUrl: browserstackURL,
-			storybookUrl: "http://localhost:9009",
+			storybookUrl: "http://localhost:9010",
 			snapshotBaseDirectory: __filename + "-snapshots",
 			beforeFirstScreenshot: waitMillis(5000),
 			testTimeoutMillis: 30000,
