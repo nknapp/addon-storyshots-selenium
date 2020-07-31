@@ -1,1 +1,10 @@
 .envrc
+node_modules
+/storybook-static/
+/.eslintcache
+/addon-storyshots-selenium.iml
+/local.log
+/yarn-error.log
+/.idea/
+/coverage/
+/dist/
