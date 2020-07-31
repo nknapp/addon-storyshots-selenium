@@ -58,9 +58,11 @@ export function imageSnapshot(options: ImageSnapshotOptions): TestMethod {
 			})
 		);
 		if (exceptions.length > 0) {
+			// eslint-disable-next-line no-console
 			console.error(
 				`Found ${exceptions.length} errors during test execution. Rethrowing the first one`
 			);
+			// eslint-disable-next-line no-console
 			console.error(exceptions);
 			throw exceptions[0];
 		}

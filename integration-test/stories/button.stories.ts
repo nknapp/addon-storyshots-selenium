@@ -9,7 +9,7 @@ export default {
 	},
 };
 
-export const withText = (): string => '<button class="btn">Hello World</button>';
+export const withText = (): string => '<button class="btn">Hello World2</button>';
 
 export const withEmoji = (): HTMLElement => {
 	const button = document.createElement("button");

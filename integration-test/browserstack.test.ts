@@ -6,6 +6,7 @@ import { promisify } from "util";
 import { storybookStaticServer } from "./test-utils/server";
 
 if (process.env.BROWSERSTACK_ACCESS_KEY == null || process.env.BROWSERSTACK_USERNAME == null) {
+	// eslint-disable-next-line no-console
 	console.warn(
 		"if you want to run tests with browserstack, please set the environment variables BROWSERSTACK_USERNAME and BROWSERSTACK_ACCESS_KEY",
 		doNothing()
@@ -25,7 +26,7 @@ if (process.env.BROWSERSTACK_ACCESS_KEY == null || process.env.BROWSERSTACK_USER
 
 	const server = storybookStaticServer(9010);
 	beforeAll(async () => server.start());
-	afterAll(async () => server.stop().catch(console.error));
+	afterAll(async () => server.stop());
 
 	initStoryshots({
 		framework: "html",

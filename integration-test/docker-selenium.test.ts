@@ -13,11 +13,11 @@ const tunnel = reverseTunnel({
 });
 
 beforeAll(async () => tunnel.start());
-afterAll(async () => tunnel.stop().catch(console.error));
+afterAll(async () => tunnel.stop());
 
 const server = storybookStaticServer(storybookPort);
 beforeAll(async () => server.start());
-afterAll(async () => server.stop().catch(console.error));
+afterAll(async () => server.stop());
 
 initStoryshots({
 	framework: "html",

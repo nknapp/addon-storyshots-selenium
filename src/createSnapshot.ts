@@ -133,10 +133,6 @@ function createPhotographerClass({
 			if (requestedSize.liesWithin(viewportSize)) {
 				return requestedSize;
 			}
-			console.warn(`Viewport is smaller than requested screenshot size for browser "${browserId}`, {
-				viewportSize,
-				requestedSize,
-			});
 			return requestedSize.intersection(viewportSize);
 		}
 
