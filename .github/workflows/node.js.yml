@@ -45,8 +45,10 @@ jobs:
       with:
         name: docker-selenium-snapshots-node-${{ matrix.node-version }}
         path: integration-test/docker-selenium.test.ts-snapshots
-
-    - run: yarn test:browserstack
+    - env:
+        BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
+        BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
+      run: yarn test:browserstack
     - name: Upload snapshots and diffs
       if: ${{ failure() }}
       uses: actions/upload-artifact@v2
