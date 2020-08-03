@@ -53,7 +53,7 @@ if (process.env.BROWSERSTACK_ACCESS_KEY == null || process.env.BROWSERSTACK_USER
 			seleniumUrl: browserstackURL,
 			storybookUrl: "http://localhost:9010",
 			snapshotBaseDirectory: __filename + "-snapshots",
-			beforeFirstScreenshot: waitMillis(5000),
+			beforeFirstScreenshot: waitMillis(1000),
 			testTimeoutMillis: 30000,
 		}),
 	});
