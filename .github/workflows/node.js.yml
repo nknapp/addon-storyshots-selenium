@@ -54,7 +54,9 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: browserstack-snapshots-node-${{ matrix.node-version }}
-        path: integration-test/browserstack.test.ts-snapshots
+        path: |
+          integration-test/browserstack.test.ts-snapshots
+          local.log
     - run: docker-compose down
 
 
