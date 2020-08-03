@@ -1,6 +1,6 @@
 /* eslint-env jest */
 import initStoryshots from "@storybook/addon-storyshots";
-import { doNothing, imageSnapshot, waitMillis } from "../src";
+import { doNothing, imageSnapshot } from "../src";
 
 import { tunnel } from "./test-utils/browserstack-tunnel";
 import { storybookStaticServer } from "./test-utils/server";
@@ -12,8 +12,8 @@ if (process.env.BROWSERSTACK_ACCESS_KEY == null || process.env.BROWSERSTACK_USER
 		doNothing()
 	);
 } else {
-	beforeAll(() => tunnel.start({ verbose: true }));
-	afterAll(() => tunnel.stop());
+	beforeAll(() => tunnel.start({ verbose: true }), 10000);
+	afterAll(() => tunnel.stop(), 10000);
 
 	const key = process.env.BROWSERSTACK_ACCESS_KEY;
 	const username = process.env.BROWSERSTACK_USERNAME;
@@ -53,7 +53,6 @@ if (process.env.BROWSERSTACK_ACCESS_KEY == null || process.env.BROWSERSTACK_USER
 			seleniumUrl: browserstackURL,
 			storybookUrl: "http://localhost:9010",
 			snapshotBaseDirectory: __filename + "-snapshots",
-			beforeFirstScreenshot: waitMillis(1000),
 			testTimeoutMillis: 30000,
 		}),
 	});
