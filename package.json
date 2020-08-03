@@ -58,7 +58,7 @@
     "babel-loader": "^8.1.0",
     "browserstack-local": "^1.4.5",
     "child-service": "2.4.0",
-    "chisel-tunnel": "^1.0.1",
+    "chisel-tunnel": "1.2.0",
     "eslint": "^7.5.0",
     "eslint-config-prettier": "^6.7.0",
     "husky": ">=4",

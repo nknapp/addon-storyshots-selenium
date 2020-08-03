@@ -3680,10 +3680,10 @@ child-service@2.4.0:
   dependencies:
     debug "^4.1.1"
 
-chisel-tunnel@^1.0.1:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/chisel-tunnel/-/chisel-tunnel-1.1.0.tgz#7f6866f632f10d71b9c12fc52d79d24f9052469f"
-  integrity sha512-jVYi/oz0Rh0Sumyu1xAwYSBPJ4FcbgeG6LZcF2UQCL8rjOTT2pbng0F4x5WHKq+gmrtdRuJIPgI9C5R0uCqvcg==
+chisel-tunnel@1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/chisel-tunnel/-/chisel-tunnel-1.2.0.tgz#fe5fc2cf95c490cad3d35e40e249907fcc57bb64"
+  integrity sha512-uUo7dHsM42EnIF7iqe1Vuz5BELhZ9+dmXbE3PuImKphfMBszLBtE77iWHEKUxpz5dL2YSl3QHIuk0tBQRp1SzQ==
   dependencies:
     debug "^4.1.1"
     fs-extra "^9.0.1"
