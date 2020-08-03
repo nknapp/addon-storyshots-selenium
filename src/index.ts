@@ -2,11 +2,12 @@ import { createSnapshot } from "./createSnapshot";
 import { ImageSnapshotOptions, InternalImageSnapshotOptions, TestMethod } from "./types";
 
 import createDebug from "debug";
-import { ResilientSeleniumAdapter } from "./resilient-selenium-adapter";
+import { ResilientSeleniumAdapter } from "./lib/resilient-selenium-adapter";
 import { defaultOptions } from "./defaultOptions";
-import { createSectionDebug, firstNonNull, requireKeyInOptions } from "./utils/internal-utils";
+import { createSectionDebug } from "./lib/section-debug";
+import { firstNonNull, requireKeyInOptions } from "./lib/utils";
 
-export { doNothing, waitMillis } from "./utils/public-utils";
+export { doNothing, waitMillis } from "./public-utils";
 
 const sectionDebug = createSectionDebug(createDebug("addon-storyshots-selenium:index-trace"));
 

@@ -1,7 +1,7 @@
-import { BrowserSpecification } from "./types";
+import { BrowserSpecification } from "../types";
 import webdriver, { error, WebDriver } from "selenium-webdriver";
 import createDebug from "debug";
-import { createSectionDebug } from "./utils/internal-utils";
+import { createSectionDebug } from "./section-debug";
 
 type WebDriverError = error.WebDriverError;
 const WebDriverError = error.WebDriverError;

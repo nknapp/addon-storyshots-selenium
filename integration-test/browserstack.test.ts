@@ -1,6 +1,6 @@
 /* eslint-env jest */
 import initStoryshots from "@storybook/addon-storyshots";
-import { doNothing, imageSnapshot } from "../src";
+import { doNothing, imageSnapshot, waitMillis } from "../src";
 
 import { tunnel } from "./test-utils/browserstack-tunnel";
 import { storybookStaticServer } from "./test-utils/server";
@@ -54,6 +54,7 @@ if (process.env.BROWSERSTACK_ACCESS_KEY == null || process.env.BROWSERSTACK_USER
 			storybookUrl: "http://localhost:9010",
 			snapshotBaseDirectory: __filename + "-snapshots",
 			testTimeoutMillis: 30000,
+			beforeFirstScreenshot: waitMillis(3000),
 		}),
 	});
 }

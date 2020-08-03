@@ -14,11 +14,11 @@ export class Extent implements WidthAndHeight {
 		this.height = height;
 	}
 
-	liesWithin(other: Extent): boolean {
-		return this.width <= other.width && this.height <= other.height;
+	visiblePartWithin(other: WidthAndHeight): Extent {
+		return this.intersection(other);
 	}
 
-	intersection(other: Extent): Extent {
+	intersection(other: WidthAndHeight): Extent {
 		return new Extent({
 			width: Math.min(this.width, other.width),
 			height: Math.min(this.height, other.height),

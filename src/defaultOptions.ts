@@ -1,5 +1,5 @@
-import { OptionalImageSnapshotOptions, StorybookContext, WidthAndHeight } from "./types";
-import { doNothing, waitMillis } from "./utils/public-utils";
+import { OptionalImageSnapshotOptions, StorybookContext, WidthXHeightString } from "./types";
+import { doNothing, waitMillis } from "./public-utils";
 import path from "path";
 import { MatchImageSnapshotOptions } from "jest-image-snapshot";
 
@@ -20,7 +20,7 @@ export const defaultOptions: OptionalImageSnapshotOptions = {
 export function getDefaultMatchOptions(
 	snapshotBaseDirectory: string,
 	context: StorybookContext,
-	size: WidthAndHeight,
+	size: WidthXHeightString,
 	browserId: string
 ): MatchImageSnapshotOptions {
 	return {

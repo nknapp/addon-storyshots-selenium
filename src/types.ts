@@ -41,7 +41,7 @@ export type AfterEachScreenshotFunction = (options: AfterEachScreenshotOptions) 
 export type GetMatchOptionsFunction = (
 	context: StorybookContext | any,
 	screenshotUrl: string,
-	size: WidthAndHeight
+	size: WidthXHeightString
 ) => Promise<MatchImageSnapshotOptions | void> | void;
 
 export interface BrowserSpecification {

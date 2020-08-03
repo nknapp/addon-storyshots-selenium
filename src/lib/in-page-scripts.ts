@@ -1,5 +1,7 @@
 /* global document */
-export function setupStoryview(screenshotUrl) {
+import { WidthAndHeight } from "../types";
+
+export function setupStoryviewIframe(screenshotUrl: string): void {
 	const storyview = document.createElement("iframe");
 	storyview.id = "storyview";
 	storyview.style.position = "absolute";
@@ -13,12 +15,12 @@ export function setupStoryview(screenshotUrl) {
 	document.body.appendChild(storyview);
 }
 
-export function resizeStoryview(width, height) {
-	const storyview = document.getElementById("storyview");
+export function resizeStoryview(width: number, height: number): void {
+	const storyview = document.getElementById("storyview") as HTMLIFrameElement;
 	storyview.width = String(width);
 	storyview.height = String(height);
 }
 
-export function getViewportSize() {
+export function getViewportSize(): WidthAndHeight {
 	return { width: window.innerWidth, height: window.innerHeight };
 }
