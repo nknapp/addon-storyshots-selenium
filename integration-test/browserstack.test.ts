@@ -1,8 +1,8 @@
 /* eslint-env jest */
 import initStoryshots from "@storybook/addon-storyshots";
 import { doNothing, imageSnapshot, waitMillis } from "../src";
-import browserstack from "browserstack-local";
-import { promisify } from "util";
+
+import { tunnel } from "./test-utils/browserstack-tunnel";
 import { storybookStaticServer } from "./test-utils/server";
 
 if (process.env.BROWSERSTACK_ACCESS_KEY == null || process.env.BROWSERSTACK_USERNAME == null) {
@@ -12,18 +12,12 @@ if (process.env.BROWSERSTACK_ACCESS_KEY == null || process.env.BROWSERSTACK_USER
 		doNothing()
 	);
 } else {
-	const browserstackLocal = new browserstack.Local();
+	beforeAll(() => tunnel.start());
+	afterAll(() => tunnel.stop());
 
 	const key = process.env.BROWSERSTACK_ACCESS_KEY;
 	const username = process.env.BROWSERSTACK_USERNAME;
 	const browserstackURL = `https://${username}:${key}@hub-cloud.browserstack.com/wd/hub`;
-
-	const start = promisify(browserstackLocal.start).bind(browserstackLocal);
-	beforeAll(async () => start({ key: key }));
-
-	const stop = promisify(browserstackLocal.stop).bind(browserstackLocal);
-	afterAll(async () => stop());
-
 	const server = storybookStaticServer(9010);
 	beforeAll(async () => server.start());
 	afterAll(async () => server.stop());
