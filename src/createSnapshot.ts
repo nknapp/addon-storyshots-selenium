@@ -21,6 +21,7 @@ expect.extend({ toMatchImageSnapshot });
 const sectionDebug = createSectionDebug(
 	createDebug("addon-storyshots-selenium:createSnapshot-trace")
 );
+const debug = createDebug("addon-storyshots-selenium:createSnapshot");
 
 interface CreateSnapshotOptions {
 	sizes: WidthXHeightString[];
@@ -73,6 +74,7 @@ function createPhotographerClass({
 		}
 
 		async compareSizedSnapshots(): Promise<void> {
+			debug("start comparing images for story " + context.story.id + " in " + browserId);
 			await this.webdriverActions.setupBlankPage();
 			await this.webdriverActions.maximiseBrowserWindow();
 			await this.webdriverActions.setupStoryviewIframe(this.screenshotUrl);
@@ -82,11 +84,12 @@ function createPhotographerClass({
 
 			await forEachSequential(this.requestedSizes, async (size) => {
 				try {
-					return this.compareScreenshotOfSize(size);
+					await this.compareScreenshotOfSize(size);
 				} catch (error) {
 					onError(error);
 				}
 			});
+			debug("done comparing images for story " + context.story.id + " in " + browserId);
 		}
 
 		async beforeFirstScreenshot() {
