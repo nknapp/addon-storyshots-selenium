@@ -12,7 +12,7 @@ if (process.env.BROWSERSTACK_ACCESS_KEY == null || process.env.BROWSERSTACK_USER
 		doNothing()
 	);
 } else {
-	beforeAll(() => tunnel.start());
+	beforeAll(() => tunnel.start({ verbose: true }));
 	afterAll(() => tunnel.stop());
 
 	const key = process.env.BROWSERSTACK_ACCESS_KEY;
