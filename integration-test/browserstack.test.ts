@@ -2,7 +2,6 @@
 import initStoryshots from "@storybook/addon-storyshots";
 import { doNothing, imageSnapshot, waitMillis } from "../src";
 
-import { tunnel } from "./test-utils/browserstack-tunnel";
 import { storybookStaticServer } from "./test-utils/server";
 
 if (process.env.BROWSERSTACK_ACCESS_KEY == null || process.env.BROWSERSTACK_USERNAME == null) {
@@ -12,8 +11,8 @@ if (process.env.BROWSERSTACK_ACCESS_KEY == null || process.env.BROWSERSTACK_USER
 		doNothing()
 	);
 } else {
-	beforeAll(() => tunnel.start({ verbose: true }), 10000);
-	afterAll(() => tunnel.stop(), 10000);
+	// beforeAll(() => tunnel.start({ verbose: true }), 10000);
+	// afterAll(() => tunnel.stop(), 10000);
 
 	const key = process.env.BROWSERSTACK_ACCESS_KEY;
 	const username = process.env.BROWSERSTACK_USERNAME;
