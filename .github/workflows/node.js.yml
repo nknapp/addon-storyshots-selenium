@@ -17,11 +17,9 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 12
-      - run: docker-compose up -d
       - run: yarn install
       - run: yarn check:format
       - run: yarn check:lint
-      - run: docker-compose down
 
   unit-test:
     runs-on: ubuntu-latest
@@ -34,8 +32,10 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
+      - run: docker-compose up -d
       - run: yarn install
       - run: yarn test:jest
+      - run: docker-compose down
 
   test-docker-selenium:
     runs-on: ubuntu-latest
