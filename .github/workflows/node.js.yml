@@ -10,19 +10,33 @@ on:
     branches: [master]
 
 jobs:
-  #  lint-format:
-  #    runs-on: ubuntu-latest
-  #    steps:
-  #    - uses: actions/checkout@v2
-  #    - name: Use Node.js ${{ matrix.node-version }}
-  #      uses: actions/setup-node@v1
-  #      with:
-  #        node-version: 12
-  #    - run: yarn install
-  #    - run: yarn check:format
-  #    - run: yarn check:lint
+  lint-format:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+      - run: yarn install
+      - run: yarn check:format
+      - run: yarn check:lint
 
-  test:
+  unit-test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [10.x, 12.x, 14.x]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: yarn install
+      - run: yarn test:jest
+
+  test-docker-selenium:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -34,30 +48,36 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: docker-compose up -d
-      - run: wget "https://s3.amazonaws.com/bstack-local-prod/BrowserStackLocal-linux-x64"
-      - run: chmod a+x BrowserStackLocal-linux-x64
-      - run: ./BrowserStackLocal-linux-x64 --daemon start --key ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
       - run: yarn install
       - run: yarn build-storybook
-      - run: yarn test:jest
       - run: yarn test:docker-selenium
       - name: Upload snapshots and diffs
         if: ${{ failure() }}
         uses: actions/upload-artifact@v2
         with:
           name: docker-selenium-snapshots-node-${{ matrix.node-version }}
-          path: integration-test/docker-selenium.test.ts-snapshots
-      - env:
+          path: integration-test/docker-selenium.test.ts-snapshots/**/__diff_output__/*.png
+      - run: docker-compose down
+
+  test-browserstack:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+      - run: yarn install
+      - run: yarn build-storybook
+      - run: yarn test:browserstack
+        env:
           BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
           BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
-          DEBUG: "addon-storyshot-selenium:*"
-        run: yarn test:browserstack
       - name: Upload snapshots and diffs
         if: ${{ failure() }}
         uses: actions/upload-artifact@v2
         with:
-          name: browserstack-snapshots-node-${{ matrix.node-version }}
+          name: browserstack-snapshots
           path: |
-            integration-test/browserstack.test.ts-snapshots
+            integration-test/browserstack.test.ts-snapshots/**/__diff_output__/*.png
             local.log
-      - run: docker-compose down
