@@ -39,16 +39,16 @@ if (process.env.BROWSERSTACK_ACCESS_KEY == null || process.env.BROWSERSTACK_USER
 						"browserstack.local": true,
 					},
 				},
-				// {
-				// 	id: "safari",
-				// 	capabilities: {
-				// 		os: "os x",
-				// 		browserName: "safari",
-				// 		browser_version: "latest",
-				// 		resolution: "1920x1080",
-				// 		"browserstack.local": true,
-				// 	},
-				// },
+				{
+					id: "safari",
+					capabilities: {
+						os: "os x",
+						browserName: "safari",
+						browser_version: "latest",
+						resolution: "1920x1080",
+						"browserstack.local": true,
+					},
+				},
 			],
 			seleniumUrl: browserstackURL,
 			storybookUrl: "http://localhost:9010",
