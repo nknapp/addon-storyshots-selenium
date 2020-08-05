@@ -36,7 +36,7 @@ jobs:
     - run: docker-compose up -d
     - run: wget "https://s3.amazonaws.com/bstack-local-prod/BrowserStackLocal-linux-x64"
     - run: chmod a+x BrowserStackLocal-linux-x64
-    - run: ./BrowserStackLocal-linux-x64 daemon start --key ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
+    - run: ./BrowserStackLocal-linux-x64 --daemon start --key ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
     - run: yarn install
     - run: yarn build-storybook
     - run: yarn test:jest
