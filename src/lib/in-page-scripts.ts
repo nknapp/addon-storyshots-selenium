@@ -5,6 +5,8 @@ export function setupStoryviewIframe(screenshotUrl: string): void {
 	const storyview = document.createElement("iframe");
 	storyview.id = "storyview";
 	storyview.style.position = "absolute";
+	storyview.style.borderTop = "0";
+	storyview.style.borderLeft = "0";
 	storyview.style.borderRight = "2px solid red";
 	storyview.style.borderBottom = "2px solid red";
 	storyview.style.left = "0";
