@@ -1,16 +1,29 @@
-import { createSnapshot } from "./createSnapshot";
+import { createSnapshot } from "./internal/createSnapshot";
 import { ImageSnapshotOptions, InternalImageSnapshotOptions, TestMethod } from "./types";
 
 import createDebug from "debug";
-import { ResilientSeleniumAdapter } from "./lib/resilient-selenium-adapter";
-import { defaultOptions } from "./defaultOptions";
-import { createSectionDebug } from "./lib/section-debug";
-import { firstNonNull, requireKeyInOptions } from "./lib/utils";
+import { ResilientSeleniumAdapter } from "./internal/resilient-selenium-adapter";
+import { defaultOptions } from "./internal/defaultOptions";
+import { createSectionDebug } from "./internal/section-debug";
+import { firstNonNull, requireKeyInOptions } from "./internal/utils";
 
 export { doNothing, waitMillis } from "./public-utils";
 
 const sectionDebug = createSectionDebug(createDebug("addon-storyshots-selenium:index-trace"));
 
+/**
+ * Create and compare image snapshots as part of the storyshots addon. The resulting function has `beforeAll`
+ * and `afterAll`-hooks attached. Althogether, the following process will be performed:
+ *
+ * * Setup selenium-drivers for all specified browsers
+ * * For all drivers in parallel, perform the following steps:
+ *   * Iterate through the stories. For each story
+ *     * open the story in the browser
+ *     * resize the browser to the specified window sizes
+ *     * take a screenshot of the window
+ *     * compare the screenshot to the baseline-version in the project.
+ * * Close down all drivers.
+ */
 export function imageSnapshot(options: ImageSnapshotOptions): TestMethod {
 	requireKeyInOptions(options, "browsers");
 	const optionsWithDefaults: InternalImageSnapshotOptions = {

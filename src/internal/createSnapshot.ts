@@ -2,17 +2,17 @@
 import createDebug from "debug";
 import { toMatchImageSnapshot } from "jest-image-snapshot";
 
-import { forEachSequential } from "./lib/foreach-sequential";
+import { forEachSequential } from "./foreach-sequential";
 import {
 	AfterEachScreenshotFunction,
 	BeforeScreenshotsFunction,
 	GetMatchOptionsFunction,
 	WidthXHeightString,
-} from "./types";
-import { ResilientSeleniumAdapter } from "./lib/resilient-selenium-adapter";
-import { createSectionDebug } from "./lib/section-debug";
+} from "../types";
+import { ResilientSeleniumAdapter } from "./resilient-selenium-adapter";
+import { createSectionDebug } from "./section-debug";
 import { getDefaultMatchOptions } from "./defaultOptions";
-import { Browser, DebugLoggingBrowser } from "./lib/browser";
+import { Browser, DebugLoggingBrowser } from "./browser";
 
 expect.extend({ toMatchImageSnapshot });
 const sectionDebug = createSectionDebug(createDebug("addon-storyshots-selenium:createSnapshot"));

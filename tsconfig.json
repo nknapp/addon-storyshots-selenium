@@ -18,8 +18,11 @@
 		"lib": ["es2020", "dom"],
 		"paths": {
 			"addon-storyshot-selenium": ["/src/"]
-		}
+		},
+		"rootDirs": ["src"],
+		"outDir": "dist"
 	},
+
 	"include": ["src/**/*"],
 	"exclude": ["src/integration-tests/**/*"]
 }

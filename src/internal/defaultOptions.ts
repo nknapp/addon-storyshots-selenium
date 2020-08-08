@@ -1,5 +1,5 @@
-import { OptionalImageSnapshotOptions, StorybookContext, WidthXHeightString } from "./types";
-import { doNothing, waitMillis } from "./public-utils";
+import { OptionalImageSnapshotOptions, StorybookContext, WidthXHeightString } from "../types";
+import { doNothing, waitMillis } from "../public-utils";
 import path from "path";
 import { MatchImageSnapshotOptions } from "jest-image-snapshot";
 

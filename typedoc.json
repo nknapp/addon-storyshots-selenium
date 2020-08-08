@@ -1,0 +1,12 @@
+{
+  "mode": "file",
+  "plugin": ["typedoc-plugin-markdown"],
+  "readme": "none",
+  "inputFiles": ["src/*.ts"],
+  "exclude": ["src/internal/**/*.ts"],
+  "excludeNotExported": true,
+  "excludeExternals": true,
+  "excludePrivate": true,
+  "excludeProtected": true,
+  "out": "apidocs"
+}

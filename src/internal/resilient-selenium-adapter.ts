@@ -47,7 +47,6 @@ export class ResilientSeleniumAdapter {
 	private async recreateDriver() {
 		debug(`Recreating webdriver for browser ${this.browser.id}`);
 		await this.closeQuietly();
-		//	await waitMillis(11000)();
 		this.driver = this.createDriver();
 		debug(`Done recreating webdriver for browser ${this.browser.id}`);
 	}

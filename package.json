@@ -1,7 +1,7 @@
 {
   "name": "@knappi/addon-storyshots-selenium",
   "version": "0.0.0",
-  "description": "Use storyshots via selenium",
+  "description": "Compare screenshots of your storybook with multiple browsers and multiple screen sizes",
   "main": "src/index.js",
   "types": "types/index.d.ts",
   "license": "MIT",
@@ -34,11 +34,16 @@
     "lint": "eslint . --cache --fix",
     "check:format": "prettier --check \"**/*.{js,ts,d.ts,css,md}\"",
     "check:lint": "eslint . --cache --max-warnings 0",
+    "make-docs": "npm run typedoc && npm run thought",
+    "typedoc": "rimraf apidocs && typedoc && git add apidocs",
     "thought": "thought run -a",
     "changelog": "standard-changelog && git add CHANGELOG.md",
-    "version": "npm run changelog && npm run thought",
+    "version": "npm run changelog && npm run make-docs",
     "storybook": "start-storybook -p 9009 -s public",
-    "build": "tsc dist && babel src -s -d dist --ignore src/*.test.js"
+    "clean": "rimraf dist",
+    "build:babel": "babel -s -d dist 'src/**/*.ts' --extensions '.ts' --ignore '*.test.js'",
+    "build:declarations": "tsc --emitDeclarationOnly",
+    "build": "yarn build:babel && yarn build:declarations"
   },
   "devDependencies": {
     "@babel/cli": "^7.10.5",
@@ -70,8 +75,8 @@
     "serve-handler": "^6.1.3",
     "standard-changelog": "^2.0.24",
     "thought": "4",
-    "thought-plugin-jsdoc": "^2.0.0",
     "trace": "^3.1.1",
+    "typedoc": "^0.17.8",
     "typescript": "^3.9.7",
     "uuid": "^8.3.0"
   },
@@ -82,6 +87,7 @@
     "jest-image-snapshot": "^4.0.2",
     "selenium-webdriver": "^4.0.0-alpha.7",
     "sharp": "^0.25.4",
+    "typedoc-plugin-markdown": "^2.4.0",
     "webdriver": "^6.1.17"
   },
   "peerDependencies": {

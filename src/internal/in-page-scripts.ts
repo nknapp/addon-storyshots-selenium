@@ -1,5 +1,5 @@
 /* global document */
-import { WidthAndHeight } from "../types";
+import { WidthAndHeight } from "./types";
 
 export function setupStoryviewIframe(screenshotUrl: string): void {
 	const storyview = document.createElement("iframe");
