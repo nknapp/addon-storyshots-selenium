@@ -1,4 +1,32 @@
-TODO
+# Overview / Purpose
+
+"${{name}}" is a plugin for Storybook's "storyshot" addons that allows you to
+visually compare your stories in multiple browsers and multiple screen sizes. What?
+
+* [Storybook](https://storybook.js.org) helps you structure your UI components. You can develop
+  components independently of the whole app, and describe them in "stories". Each story is
+  small web-page that shows your component in a certain state. It's pretty cool...
+
+* [Storyshots](https://storybook.js.org/docs/testing/structural-testing/) is an add-on to storybook.
+  It allows you to take snapshots of each of your stories and compare them to old versions.
+  The test ensures that they do not change and if they do, you can verify if the change is wanted
+  or not.
+
+By default, StoryShots uses [React Tree Snapshots](https://jestjs.io/blog/2016/07/27/jest-14.html).
+Using "{{name}}", you can take screenshots of your components using browser remote controlled via
+[Selenium](https://www.selenium.dev/). Those screenshots are visually compared to a baseline-screenshot
+using the package {{npm "jest-image-snapshot"}}. Differences lead to a failing test and the difference
+will be added as an image-file (which can be added to your CI's artifacts).
+
+"{{name}}" also allows you to test responsive components by specifying multiple screen sizes. It also
+allows you to specify multiple browsers.
+
+You can setup a Selenium grid yourself, use a [docker-image](https://github.com/containerize-my-server/docker-image-selenium-with-tunnel)
+or rent services like [BrowserStack](https://browserstack.com) or [SauceLabs](https://saucelabs.com/).
+
+> At this point, I should mention that BrowserStack provided a free account to me
+> very quickly, so that I could automated tests for this component using BrowserStack.
+> I am not anyhow affiliated with BrowserStack however.
 
 * docs
     * [ ] Mention mechanism of viewport setup and why the actual size of a screenshot maybe lower than the selenium screen size

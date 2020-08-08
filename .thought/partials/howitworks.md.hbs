@@ -1,0 +1,20 @@
+# How it works
+
+Taking a screenshot of the correct size is not easy (as I had to find out), because decorations
+have different sizes in different browsers, and some browsers have a minimal window-size.
+
+"{{name}}" uses an iframe to simulate the browser window. The workflow for screenshots in
+multiple window sizes is the following:
+
+* Open `about:blank`
+* Insert an iframe, loading the storybook-story.
+* Execute hook "beforeFirstScreenshot", which by default waits a couple of seconds to let the
+  page load completely.
+* Resize the iframe to the first specified width and height, execute "beforeEachScreenshot", take a screenshot
+  and compare.
+* Resize the iframe to the specified width and height, execute "beforeEachScreenshot", take a screenshot
+and compare.
+* and so on...
+
+This process is executed in parallel for each browser. The selenium-drivers are initialized before
+all tests and closed afterwards.
