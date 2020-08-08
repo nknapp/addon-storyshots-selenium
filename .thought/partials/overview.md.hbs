@@ -1,6 +1,6 @@
 # Overview / Purpose
 
-"${{name}}" is a plugin for Storybook's "storyshot" addons that allows you to
+"{{package.name}}" is a plugin for Storybook's "storyshot" addons that allows you to
 visually compare your stories in multiple browsers and multiple screen sizes. What?
 
 * [Storybook](https://storybook.js.org) helps you structure your UI components. You can develop
@@ -13,12 +13,12 @@ visually compare your stories in multiple browsers and multiple screen sizes. Wh
   or not.
 
 By default, StoryShots uses [React Tree Snapshots](https://jestjs.io/blog/2016/07/27/jest-14.html).
-Using "{{name}}", you can take screenshots of your components using browser remote controlled via
+Using "{{package.name}}", you can take screenshots of your components using browser remote controlled via
 [Selenium](https://www.selenium.dev/). Those screenshots are visually compared to a baseline-screenshot
 using the package {{npm "jest-image-snapshot"}}. Differences lead to a failing test and the difference
 will be added as an image-file (which can be added to your CI's artifacts).
 
-"{{name}}" also allows you to test responsive components by specifying multiple screen sizes. It also
+"{{package.name}}" also allows you to test responsive components by specifying multiple screen sizes. It also
 allows you to specify multiple browsers.
 
 You can setup a Selenium grid yourself, use a [docker-image](https://github.com/containerize-my-server/docker-image-selenium-with-tunnel)
@@ -29,8 +29,6 @@ or rent services like [BrowserStack](https://browserstack.com) or [SauceLabs](ht
 > I am not anyhow affiliated with BrowserStack however.
 
 * docs
-    * [ ] Mention mechanism of viewport setup and why the actual size of a screenshot maybe lower than the selenium screen size
-        * Browser decorations
     * [ ] describe storybook configuration when trying to use IE in browserstack ('@storybook/preset-typescript' and
       custom babel-config in .storybook
     * [ ] describe the problem with multiple browser-stack-tunnels in parallel build jobs

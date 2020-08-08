@@ -10,9 +10,9 @@
 
 # Overview / Purpose
 
-"\$" is a plugin for Storybook's "storyshot" addons that allows you to
-visually compare your stories in multiple browsers and multiple screen
-sizes. What?
+"@knappi/addon-storyshots-selenium" is a plugin for Storybook's
+"storyshot" addons that allows you to visually compare your stories in
+multiple browsers and multiple screen sizes. What?
 
 - [Storybook](https://storybook.js.org) helps you structure your UI
   components. You can develop components independently of the whole
@@ -27,17 +27,17 @@ sizes. What?
 
 By default, StoryShots uses
 [React Tree Snapshots](https://jestjs.io/blog/2016/07/27/jest-14.html).
-Using "", you can take screenshots of your components using browser
-remote controlled via [Selenium](https://www.selenium.dev/). Those
-screenshots are visually compared to a baseline-screenshot using the
-package
+Using "@knappi/addon-storyshots-selenium", you can take screenshots of
+your components using browser remote controlled via
+[Selenium](https://www.selenium.dev/). Those screenshots are visually
+compared to a baseline-screenshot using the package
 [jest-image-snapshot](https://npmjs.com/package/jest-image-snapshot).
 Differences lead to a failing test and the difference will be added as
 an image-file (which can be added to your CI's artifacts).
 
-"" also allows you to test responsive components by specifying
-multiple screen sizes. It also allows you to specify multiple
-browsers.
+"@knappi/addon-storyshots-selenium" also allows you to test responsive
+components by specifying multiple screen sizes. It also allows you to
+specify multiple browsers.
 
 You can setup a Selenium grid yourself, use a
 [docker-image](https://github.com/containerize-my-server/docker-image-selenium-with-tunnel)
@@ -50,9 +50,6 @@ or rent services like [BrowserStack](https://browserstack.com) or
 > BrowserStack however.
 
 - docs
-  - [ ] Mention mechanism of viewport setup and why the actual size of
-        a screenshot maybe lower than the selenium screen size
-    - Browser decorations
   - [ ] describe storybook configuration when trying to use IE in
         browserstack ('@storybook/preset-typescript' and custom
         babel-config in .storybook
@@ -110,8 +107,9 @@ Taking a screenshot of the correct size is not easy (as I had to find
 out), because decorations have different sizes in different browsers,
 and some browsers have a minimal window-size.
 
-"" uses an iframe to simulate the browser window. The workflow for
-screenshots in multiple window sizes is the following:
+"@knappi/addon-storyshots-selenium" uses an iframe to simulate the
+browser window. The workflow for screenshots in multiple window sizes
+is the following:
 
 - Open `about:blank`
 - Insert an iframe, loading the storybook-story.
