@@ -43,7 +43,7 @@
 Ƭ **AfterEachScreenshotFunction**: _function_
 
 _Defined in
-[src/types.ts:38](https://github.com/nknapp/addons-storyshots-selenium/blob/fbd4145/src/types.ts#L38)_
+[src/types.ts:38](https://github.com/nknapp/addons-storyshots-selenium/blob/aa41d04/src/types.ts#L38)_
 
 #### Type declaration:
 
@@ -64,7 +64,7 @@ _Promise‹void›_
 Ƭ **BeforeScreenshotsFunction**: _function_
 
 _Defined in
-[src/types.ts:31](https://github.com/nknapp/addons-storyshots-selenium/blob/fbd4145/src/types.ts#L31)_
+[src/types.ts:31](https://github.com/nknapp/addons-storyshots-selenium/blob/aa41d04/src/types.ts#L31)_
 
 #### Type declaration:
 
@@ -85,7 +85,7 @@ _Promise‹void›_
 Ƭ **GetMatchOptionsFunction**: _function_
 
 _Defined in
-[src/types.ts:40](https://github.com/nknapp/addons-storyshots-selenium/blob/fbd4145/src/types.ts#L40)_
+[src/types.ts:40](https://github.com/nknapp/addons-storyshots-selenium/blob/aa41d04/src/types.ts#L40)_
 
 #### Type declaration:
 
@@ -112,7 +112,7 @@ _Partial‹[OptionalImageSnapshotOptions](interfaces/optionalimagesnapshotoption
 [RequiredImageSnapshotOptions](interfaces/requiredimagesnapshotoptions.md)_
 
 _Defined in
-[src/types.ts:90](https://github.com/nknapp/addons-storyshots-selenium/blob/fbd4145/src/types.ts#L90)_
+[src/types.ts:90](https://github.com/nknapp/addons-storyshots-selenium/blob/aa41d04/src/types.ts#L90)_
 
 ---
 
@@ -124,7 +124,7 @@ _[OptionalImageSnapshotOptions](interfaces/optionalimagesnapshotoptions.md)
 [RequiredImageSnapshotOptions](interfaces/requiredimagesnapshotoptions.md)_
 
 _Defined in
-[src/types.ts:84](https://github.com/nknapp/addons-storyshots-selenium/blob/fbd4145/src/types.ts#L84)_
+[src/types.ts:84](https://github.com/nknapp/addons-storyshots-selenium/blob/aa41d04/src/types.ts#L84)_
 
 ---
 
@@ -133,7 +133,7 @@ _Defined in
 Ƭ **VoidAsyncFunction**: _function_
 
 _Defined in
-[src/public-utils.ts:4](https://github.com/nknapp/addons-storyshots-selenium/blob/fbd4145/src/public-utils.ts#L4)_
+[src/public-utils.ts:4](https://github.com/nknapp/addons-storyshots-selenium/blob/aa41d04/src/public-utils.ts#L4)_
 
 A function that returns a void-promise
 
@@ -148,7 +148,7 @@ A function that returns a void-promise
 Ƭ **WidthXHeightString**: _string_
 
 _Defined in
-[src/types.ts:23](https://github.com/nknapp/addons-storyshots-selenium/blob/fbd4145/src/types.ts#L23)_
+[src/types.ts:23](https://github.com/nknapp/addons-storyshots-selenium/blob/aa41d04/src/types.ts#L23)_
 
 String of the form "1000x800"
 
@@ -160,7 +160,7 @@ String of the form "1000x800"
 createSectionDebug(createDebug("addon-storyshots-selenium:index-trace"))
 
 _Defined in
-[src/index.ts:12](https://github.com/nknapp/addons-storyshots-selenium/blob/fbd4145/src/index.ts#L12)_
+[src/index.ts:12](https://github.com/nknapp/addons-storyshots-selenium/blob/aa41d04/src/index.ts#L12)_
 
 ## Functions
 
@@ -169,7 +169,7 @@ _Defined in
 ▸ **doNothing**(): _[VoidAsyncFunction](README.md#voidasyncfunction)_
 
 _Defined in
-[src/public-utils.ts:20](https://github.com/nknapp/addons-storyshots-selenium/blob/fbd4145/src/public-utils.ts#L20)_
+[src/public-utils.ts:20](https://github.com/nknapp/addons-storyshots-selenium/blob/aa41d04/src/public-utils.ts#L20)_
 
 returns an async function that resolves immediately, without doing
 anything.
@@ -185,7 +185,7 @@ anything.
 _[TestMethod](interfaces/testmethod.md)_
 
 _Defined in
-[src/index.ts:27](https://github.com/nknapp/addons-storyshots-selenium/blob/fbd4145/src/index.ts#L27)_
+[src/index.ts:27](https://github.com/nknapp/addons-storyshots-selenium/blob/aa41d04/src/index.ts#L27)_
 
 Create and compare image snapshots as part of the storyshots addon.
 The resulting function has `beforeAll` and `afterAll`-hooks attached.
@@ -216,7 +216,7 @@ Althogether, the following process will be performed:
 _[VoidAsyncFunction](README.md#voidasyncfunction)_
 
 _Defined in
-[src/public-utils.ts:13](https://github.com/nknapp/addons-storyshots-selenium/blob/fbd4145/src/public-utils.ts#L13)_
+[src/public-utils.ts:13](https://github.com/nknapp/addons-storyshots-selenium/blob/aa41d04/src/public-utils.ts#L13)_
 
 Returns a async function that resolves after the specified time in
 milliseconds.

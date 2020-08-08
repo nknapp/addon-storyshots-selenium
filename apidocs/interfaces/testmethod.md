@@ -15,7 +15,7 @@ The result-type of the "imageSnapshot" method.
 any): _any_
 
 _Defined in
-[src/types.ts:13](https://github.com/nknapp/addons-storyshots-selenium/blob/fbd4145/src/types.ts#L13)_
+[src/types.ts:13](https://github.com/nknapp/addons-storyshots-selenium/blob/aa41d04/src/types.ts#L13)_
 
 The result-type of the "imageSnapshot" method.
 
@@ -45,7 +45,7 @@ The result-type of the "imageSnapshot" method.
 • **afterAll**? : _[LifeCycleMethod](lifecyclemethod.md)_
 
 _Defined in
-[src/types.ts:16](https://github.com/nknapp/addons-storyshots-selenium/blob/fbd4145/src/types.ts#L16)_
+[src/types.ts:16](https://github.com/nknapp/addons-storyshots-selenium/blob/aa41d04/src/types.ts#L16)_
 
 ---
 
@@ -54,7 +54,7 @@ _Defined in
 • **beforeAll**? : _[LifeCycleMethod](lifecyclemethod.md)_
 
 _Defined in
-[src/types.ts:15](https://github.com/nknapp/addons-storyshots-selenium/blob/fbd4145/src/types.ts#L15)_
+[src/types.ts:15](https://github.com/nknapp/addons-storyshots-selenium/blob/aa41d04/src/types.ts#L15)_
 
 ---
 
@@ -63,4 +63,4 @@ _Defined in
 • **timeout**? : _number_
 
 _Defined in
-[src/types.ts:17](https://github.com/nknapp/addons-storyshots-selenium/blob/fbd4145/src/types.ts#L17)_
+[src/types.ts:17](https://github.com/nknapp/addons-storyshots-selenium/blob/aa41d04/src/types.ts#L17)_

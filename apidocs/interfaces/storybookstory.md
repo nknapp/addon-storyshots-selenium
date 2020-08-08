@@ -20,4 +20,4 @@
 • **id**: _string_
 
 _Defined in
-[src/types.ts:98](https://github.com/nknapp/addons-storyshots-selenium/blob/fbd4145/src/types.ts#L98)_
+[src/types.ts:98](https://github.com/nknapp/addons-storyshots-selenium/blob/aa41d04/src/types.ts#L98)_

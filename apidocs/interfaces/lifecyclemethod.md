@@ -12,7 +12,7 @@
 ▸ (): _Promise‹void›_
 
 _Defined in
-[src/types.ts:5](https://github.com/nknapp/addons-storyshots-selenium/blob/fbd4145/src/types.ts#L5)_
+[src/types.ts:5](https://github.com/nknapp/addons-storyshots-selenium/blob/aa41d04/src/types.ts#L5)_
 
 **Returns:** _Promise‹void›_
 
@@ -29,4 +29,4 @@ _Defined in
 • **timeout**? : _number_
 
 _Defined in
-[src/types.ts:7](https://github.com/nknapp/addons-storyshots-selenium/blob/fbd4145/src/types.ts#L7)_
+[src/types.ts:7](https://github.com/nknapp/addons-storyshots-selenium/blob/aa41d04/src/types.ts#L7)_

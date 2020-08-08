@@ -21,7 +21,7 @@
 • **context**: _[StorybookContext](storybookcontext.md) | any_
 
 _Defined in
-[src/types.ts:34](https://github.com/nknapp/addons-storyshots-selenium/blob/fbd4145/src/types.ts#L34)_
+[src/types.ts:34](https://github.com/nknapp/addons-storyshots-selenium/blob/aa41d04/src/types.ts#L34)_
 
 ---
 
@@ -30,4 +30,4 @@ _Defined in
 • **screenshot**: _Buffer_
 
 _Defined in
-[src/types.ts:35](https://github.com/nknapp/addons-storyshots-selenium/blob/fbd4145/src/types.ts#L35)_
+[src/types.ts:35](https://github.com/nknapp/addons-storyshots-selenium/blob/aa41d04/src/types.ts#L35)_

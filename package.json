@@ -35,6 +35,7 @@
     "check:format": "prettier --check \"**/*.{js,ts,d.ts,css,md}\"",
     "check:lint": "eslint . --cache --max-warnings 0",
     "make-docs": "npm run typedoc && npm run thought",
+    "postmake-docs": "prettier --write '**/*.md'",
     "typedoc": "rimraf apidocs && typedoc && git add apidocs",
     "thought": "thought run -a",
     "changelog": "standard-changelog && git add CHANGELOG.md",
