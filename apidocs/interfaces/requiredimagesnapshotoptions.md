@@ -20,4 +20,4 @@
 • **browsers**: _[BrowserSpecification](browserspecification.md)[]_
 
 _Defined in
-[src/types.ts:52](https://github.com/nknapp/addons-storyshots-selenium/blob/aa41d04/src/types.ts#L52)_
+[src/types.ts:52](https://github.com/nknapp/addons-storyshots-selenium/blob/master/src/types.ts#L52)_

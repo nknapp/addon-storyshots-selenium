@@ -21,7 +21,7 @@
 • **capabilities**: _any_
 
 _Defined in
-[src/types.ts:48](https://github.com/nknapp/addons-storyshots-selenium/blob/aa41d04/src/types.ts#L48)_
+[src/types.ts:48](https://github.com/nknapp/addons-storyshots-selenium/blob/master/src/types.ts#L48)_
 
 ---
 
@@ -30,4 +30,4 @@ _Defined in
 • **id**: _string_
 
 _Defined in
-[src/types.ts:47](https://github.com/nknapp/addons-storyshots-selenium/blob/aa41d04/src/types.ts#L47)_
+[src/types.ts:47](https://github.com/nknapp/addons-storyshots-selenium/blob/master/src/types.ts#L47)_

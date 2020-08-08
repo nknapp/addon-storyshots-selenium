@@ -118,5 +118,8 @@
     }
   },
   "author": "Nils Knappmeier <npm@knappi.org>",
-  "repository": "git@github.com:nknapp/addons-storyshots-selenium.git"
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:nknapp/addons-storyshots-selenium.git"
+  }
 }

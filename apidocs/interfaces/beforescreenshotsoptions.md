@@ -22,7 +22,7 @@
 • **context**: _[StorybookContext](storybookcontext.md) | any_
 
 _Defined in
-[src/types.ts:27](https://github.com/nknapp/addons-storyshots-selenium/blob/aa41d04/src/types.ts#L27)_
+[src/types.ts:27](https://github.com/nknapp/addons-storyshots-selenium/blob/master/src/types.ts#L27)_
 
 ---
 
@@ -31,7 +31,7 @@ _Defined in
 • **driver**: _WebDriver_
 
 _Defined in
-[src/types.ts:26](https://github.com/nknapp/addons-storyshots-selenium/blob/aa41d04/src/types.ts#L26)_
+[src/types.ts:26](https://github.com/nknapp/addons-storyshots-selenium/blob/master/src/types.ts#L26)_
 
 ---
 
@@ -40,4 +40,4 @@ _Defined in
 • **screenshotUrl**: _string_
 
 _Defined in
-[src/types.ts:28](https://github.com/nknapp/addons-storyshots-selenium/blob/aa41d04/src/types.ts#L28)_
+[src/types.ts:28](https://github.com/nknapp/addons-storyshots-selenium/blob/master/src/types.ts#L28)_

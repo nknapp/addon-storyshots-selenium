@@ -8,5 +8,6 @@
   "excludeExternals": true,
   "excludePrivate": true,
   "excludeProtected": true,
-  "out": "apidocs"
+  "out": "apidocs",
+  "gitRevision": "master"
 }
