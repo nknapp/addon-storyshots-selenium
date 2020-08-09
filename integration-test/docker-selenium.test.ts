@@ -3,19 +3,29 @@ import { reverseTunnel } from "./test-utils/reverse-tunnel";
 import { imageSnapshot } from "../src";
 import { storybookStaticServer } from "./test-utils/server";
 
-// Storybook must already be running on port 9009
-const remoteTunnelPort = 9009;
-const storybookPort = 9009;
+const REMOTE_TUNNEL_PORT = 9009;
+const STORYBOOK_PORT = 9009;
 
+// This configuration uses chisel to connect to a chisel-server in the docker-selenium container
+// in order to create a tunnel a tunnel from the docker-selenium-server to localhost
+// The browser then connects to the start of the tunnel (REMOTE_TUNNEL_PORT) which is
+// forwarded to the local STORYBOOK_PORT.
+//
+// * The selenium docker-container must be started. Have a look at the docker-compose.yml
+//   in this repo. The used image supports firefox and chrome.
+// * `yarn build-storybook` must have been executed before running the tests.
+// * `yarn build-storybook -w ` can be used in development to rebuild storybook on changes.
+//
+//
 const tunnel = reverseTunnel({
 	host: process.env.SELENIUM_HOST || "localhost",
-	tunnelSpec: `R:${remoteTunnelPort}:localhost:${storybookPort}`,
+	tunnelSpec: `R:${REMOTE_TUNNEL_PORT}:localhost:${STORYBOOK_PORT}`,
 });
 
 beforeAll(async () => tunnel.start());
 afterAll(async () => tunnel.stop());
 
-const server = storybookStaticServer(storybookPort);
+const server = storybookStaticServer(STORYBOOK_PORT);
 beforeAll(async () => server.start());
 afterAll(async () => server.stop());
 
