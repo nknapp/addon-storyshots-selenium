@@ -2,8 +2,8 @@
   "name": "@knappi/addon-storyshots-selenium",
   "version": "0.0.0",
   "description": "Compare screenshots of your storybook with multiple browsers and multiple screen sizes",
-  "main": "src/index.js",
-  "types": "types/index.d.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "license": "MIT",
   "private": false,
   "funding": [
@@ -17,9 +17,7 @@
     }
   ],
   "files": [
-    "dist",
-    "src/**/*.js",
-    "src/**/*.json"
+    "dist"
   ],
   "scripts": {
     "test:jest": "jest",
@@ -27,9 +25,7 @@
     "test:browserstack": "jest --testMatch=**/integration-test/browserstack.test.ts",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
-    "pretest": "npm run lint",
     "test": "npm run test:coverage --",
-    "posttest": "npm run format",
     "format": "prettier --loglevel warn --write \"**/*.{js,ts,d.ts,css,md}\"",
     "lint": "eslint . --cache --fix",
     "check:format": "prettier --check \"**/*.{js,ts,d.ts,css,md}\"",
@@ -42,9 +38,10 @@
     "version": "npm run changelog && npm run make-docs",
     "storybook": "start-storybook -p 9009 -s public",
     "clean": "rimraf dist",
-    "build:babel": "babel -s -d dist 'src/**/*.ts' --extensions '.ts' --ignore '*.test.js'",
+    "build:code": "NODE_ENV=production babel -s -d dist 'src' --extensions '.ts'",
     "build:declarations": "tsc --emitDeclarationOnly",
-    "build": "yarn build:babel && yarn build:declarations"
+    "build": "yarn build:code && yarn build:declarations",
+    "prepublishOnly": "yarn clean && yarn build"
   },
   "devDependencies": {
     "@babel/cli": "^7.10.5",
@@ -100,7 +97,7 @@
     }
   },
   "lint-staged": {
-    "*.{js,ts,jsx,tsx}": "eslint --cache --fix --max-warnings=0",
+    "*.{js,ts,jsx,tsx}": "eslint --cache --fix",
     "*.{js,ts,d.ts,css,md}": "prettier --write"
   },
   "jest": {

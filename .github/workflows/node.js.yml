@@ -19,7 +19,7 @@ jobs:
           node-version: 12
       - run: yarn install
       - run: yarn check:format
-      - run: yarn check:lint
+      - run: yarn check:lint --max-warnings=0
 
   unit-test:
     runs-on: ubuntu-latest
