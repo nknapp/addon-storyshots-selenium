@@ -124,6 +124,10 @@ MIT-license.
 
 See [LICENSE.md](LICENSE.md) for details.
 
+# Release-Notes
+
+For release notes, see [CHANGELOG.md](CHANGELOG.md)
+
 # Contributing guidelines
 
 See [CONTRIBUTING.md](CONTRIBUTING.md).
