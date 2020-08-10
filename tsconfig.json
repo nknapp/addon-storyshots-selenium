@@ -1,25 +1,6 @@
 {
+	"extends": "tsconfig.base.json",
 	"compilerOptions": {
-		"rootDir": "src",
-		"types": ["webpack-env", "node", "jest"],
-		"declaration": true,
-		"baseUrl": ".",
-		"incremental": false,
-		"noImplicitAny": false,
-		"experimentalDecorators": true,
-		"sourceMap": true,
-		"emitDecoratorMetadata": true,
-		"jsx": "react",
-		"module": "commonjs",
-		"skipDefaultLibCheck": true,
-		"skipLibCheck": true,
-		"allowSyntheticDefaultImports": true,
-		"esModuleInterop": true,
-		"target": "ES5",
-		"lib": ["es2020", "dom"],
-		"outDir": "dist"
-	},
-
-	"include": ["src/**/*"],
-	"exclude": ["src/integration-tests/**/*","src/**/*.test.ts", "src/internal/test-utils/**"]
+		"rootDirs": ["src","integration-tests"],
+	}
 }
