@@ -1,4 +1,3 @@
-import { RenderTree } from "@storybook/addon-storyshots/dist/frameworks/Loader";
 import { MatchImageSnapshotOptions } from "jest-image-snapshot";
 import { WebDriver } from "selenium-webdriver";
 
@@ -11,7 +10,7 @@ export interface LifeCycleMethod {
  * The result-type of the "imageSnapshot" method.
  */
 export interface TestMethod {
-	(story: any, context: any, renderTree: RenderTree, options?: any): any;
+	(story: any, context: any): any;
 	beforeAll?: LifeCycleMethod;
 	afterAll?: LifeCycleMethod;
 	timeout?: number;
