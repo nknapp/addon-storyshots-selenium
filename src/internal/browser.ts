@@ -1,7 +1,7 @@
-import { WebDriver } from "selenium-webdriver";
+import { Builder, WebDriver } from "selenium-webdriver";
 import { Extent } from "./extent";
 import { getViewportSize, resizeStoryview, setupStoryviewIframe } from "./in-page-scripts";
-import { WidthXHeightString } from "../types";
+import { BrowserSpecification, WidthXHeightString } from "../types";
 import sharp from "sharp";
 import { addDebugLogToClass } from "./class-debug";
 import createDebug from "debug";
@@ -11,14 +11,17 @@ type WithDriver<T> = T & { driver: WebDriver };
 type CallbackWithDriver<P, R> = (argWithDriver: WithDriver<P>) => Promise<R>;
 
 export class Browser {
-	private readonly driver: WebDriver;
+	public readonly driver: WebDriver;
 	public readonly id: string;
 	private viewportSize: Extent;
 	private storyviewSize: Extent;
 
-	constructor(driver: WebDriver, id: string) {
-		this.driver = driver;
-		this.id = id;
+	constructor(seleniumUrl: string, browser: BrowserSpecification) {
+		this.id = browser.id;
+		this.driver = new Builder()
+			.usingServer(seleniumUrl)
+			.withCapabilities(browser.capabilities)
+			.build();
 	}
 
 	async prepareBrowser(screenshotUrl: string): Promise<void> {
@@ -62,6 +65,10 @@ export class Browser {
 				`Error extracting screenshot of size ${width}x${height} for browser "${this.id}"`
 			);
 		}
+	}
+
+	public async close(): Promise<void> {
+		await this.driver.close();
 	}
 }
 

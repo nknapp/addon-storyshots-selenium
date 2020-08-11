@@ -2,10 +2,11 @@ import { createSnapshot } from "./internal/createSnapshot";
 import { ImageSnapshotOptions, InternalImageSnapshotOptions, TestMethod } from "./types";
 
 import createDebug from "debug";
-import { ResilientSeleniumAdapter } from "./internal/resilient-selenium-adapter";
 import { defaultOptions } from "./internal/defaultOptions";
 import { createSectionDebug } from "./internal/section-debug";
 import { firstNonNull, requireKeyInOptions } from "./internal/utils";
+import { Browser, DebugLoggingBrowser } from "./internal/browser";
+import { doNothing } from "./public-utils";
 
 export { doNothing, waitMillis } from "./public-utils";
 
@@ -31,22 +32,18 @@ export function imageSnapshot(options: ImageSnapshotOptions): TestMethod {
 		...options,
 	};
 
-	let webdriverAdapters: ResilientSeleniumAdapter[];
+	let browsers: Browser[];
 
 	async function setupSeleniumWebdrivers() {
-		webdriverAdapters = optionsWithDefaults.browsers.map(
-			(browser) => new ResilientSeleniumAdapter(optionsWithDefaults.seleniumUrl, browser)
+		browsers = optionsWithDefaults.browsers.map(
+			(browser) => new DebugLoggingBrowser(optionsWithDefaults.seleniumUrl, browser)
 		);
 	}
 
 	async function closeSeleniumWebdrivers() {
-		if (webdriverAdapters != null) {
+		if (browsers != null) {
 			await Promise.all(
-				webdriverAdapters.map(async (seleniumAdapter) =>
-					sectionDebug(`shutting down browser ${seleniumAdapter.browserId}`, () =>
-						seleniumAdapter.close()
-					)
-				)
+				browsers.map(async (seleniumAdapter) => seleniumAdapter.close().catch(doNothing()))
 			);
 		}
 	}
@@ -55,11 +52,10 @@ export function imageSnapshot(options: ImageSnapshotOptions): TestMethod {
 		const storySpecificSizes = context.story.parameters?.storyshotSelenium?.sizes;
 		const exceptions = [];
 		await Promise.all(
-			webdriverAdapters.map(async (webdriverAdapter) => {
+			browsers.map(async (browser) => {
 				await createSnapshot({
 					sizes: firstNonNull(storySpecificSizes, optionsWithDefaults.sizes),
-					browserId: webdriverAdapter.browserId,
-					webdriverAdapter,
+					browser,
 					context,
 					storybookUrl: optionsWithDefaults.storybookUrl,
 					beforeFirstScreenshot: optionsWithDefaults.beforeFirstScreenshot,

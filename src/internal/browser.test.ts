@@ -1,6 +1,6 @@
 import { Browser } from "./browser";
 import { willBeInitialized } from "./test-utils/will-be-initialized";
-import { Builder, By, WebDriver } from "selenium-webdriver";
+import { By } from "selenium-webdriver";
 import { toMatchImageSnapshot } from "jest-image-snapshot";
 
 expect.extend({ toMatchImageSnapshot });
@@ -11,27 +11,25 @@ function htmlAsDataUrl(strings: TemplateStringsArray, ...substitutions: string[]
 	return "data:text/html;base64," + htmlAsBase64;
 }
 
-let driver: WebDriver = willBeInitialized();
 let browser: Browser = willBeInitialized();
 
 beforeAll(() => {
-	driver = new Builder()
-		.usingServer("http://localhost:24444/wd/hub")
-		.withCapabilities({
+	browser = new Browser("http://localhost:24444/wd/hub", {
+		id: "chrome",
+		capabilities: {
 			browserName: "chrome",
-		})
-		.build();
-	browser = new Browser(driver, "chrome");
+		},
+	});
 });
 
 beforeEach(async () => {
-	await driver.switchTo().defaultContent();
-	await driver.get("about:blank");
-	await driver.manage().window().setRect({ x: 100, y: 100, width: 500, height: 500 });
+	await browser.driver.switchTo().defaultContent();
+	await browser.driver.get("about:blank");
+	await browser.driver.manage().window().setRect({ x: 100, y: 100, width: 500, height: 500 });
 });
 
 afterAll(async () => {
-	await driver.close();
+	await browser.close();
 });
 
 describe("prepareBrowser", () => {
@@ -39,9 +37,9 @@ describe("prepareBrowser", () => {
 		const testPage = htmlAsDataUrl`<div>Web Page Contents</div>`;
 		await browser.prepareBrowser(testPage);
 
-		const iframe = await driver.findElement(By.id("storyview"));
-		await driver.switchTo().frame(iframe);
-		const body = await driver.findElement(By.css("body"));
+		const iframe = await browser.driver.findElement(By.id("storyview"));
+		await browser.driver.switchTo().frame(iframe);
+		const body = await browser.driver.findElement(By.css("body"));
 		expect(await body.getText()).toEqual("Web Page Contents");
 	});
 });
