@@ -1,7 +1,7 @@
 /* istanbul ignore file */
 
 /* global document */
-import { WidthAndHeight } from "./types";
+import { WidthAndHeight } from "./internal-types";
 
 export function setupStoryviewIframe(screenshotUrl: string): void {
 	const storyview = document.createElement("iframe");
@@ -9,6 +9,8 @@ export function setupStoryviewIframe(screenshotUrl: string): void {
 	storyview.style.position = "absolute";
 	storyview.style.borderTop = "0";
 	storyview.style.borderLeft = "0";
+	// borders are not visible in screenshots, but helpful when observing
+	// tests live (or via video-recording)
 	storyview.style.borderRight = "2px solid red";
 	storyview.style.borderBottom = "2px solid red";
 	storyview.style.left = "0";

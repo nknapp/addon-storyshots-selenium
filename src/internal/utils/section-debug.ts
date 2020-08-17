@@ -2,27 +2,20 @@ interface SectionDebug {
 	<T>(section: string, fn: Provider<T>): T;
 }
 
-interface Provider<T> {
-	(): T;
-}
+type Provider<T> = () => T;
 
 export interface DebugLite {
 	(...args: any[]): void;
-
 	enabled: boolean;
 }
 
 type PossiblePromise<T> = PromiseLike<T> | T;
 
 export function createSectionDebug(debug: DebugLite): SectionDebug {
-	function logSuccessAndReturn<T>(section: string, result: T) {
-		debug(`section "${section}" done`);
-		return result;
-	}
-
-	function logErrorAndThrow(section: string, error: Error) {
-		debug(`section "${section}" threw `, error);
-		throw error;
+	if (debug.enabled) {
+		return withDebugLog;
+	} else {
+		return (section, fn) => fn();
 	}
 
 	function withDebugLog<T extends PossiblePromise<any>>(section: string, fn: Provider<T>): T {
@@ -41,9 +34,13 @@ export function createSectionDebug(debug: DebugLite): SectionDebug {
 		}
 	}
 
-	if (debug.enabled) {
-		return withDebugLog;
-	} else {
-		return (section, fn) => fn();
+	function logSuccessAndReturn<T>(section: string, result: T) {
+		debug(`section "${section}" done`);
+		return result;
+	}
+
+	function logErrorAndThrow(section: string, error: Error) {
+		debug(`section "${section}" threw `, error);
+		throw error;
 	}
 }

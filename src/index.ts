@@ -3,8 +3,8 @@ import { ImageSnapshotOptions, InternalImageSnapshotOptions, TestMethod } from "
 
 import createDebug from "debug";
 import { defaultOptions } from "./internal/defaultOptions";
-import { createSectionDebug } from "./internal/section-debug";
-import { firstNonNull, requireKeyInOptions } from "./internal/utils";
+import { createSectionDebug } from "./internal/utils/section-debug";
+import { firstNonNull, requireKeyInOptions } from "./internal/utils/null-handling";
 import { Browser, DebugLoggingBrowser } from "./internal/browser";
 import { doNothing } from "./public-utils";
 

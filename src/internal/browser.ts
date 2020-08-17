@@ -1,10 +1,11 @@
 import { Builder, WebDriver } from "selenium-webdriver";
-import { Extent } from "./extent";
 import { getViewportSize, resizeStoryview, setupStoryviewIframe } from "./in-page-scripts";
 import { BrowserSpecification, WidthXHeightString } from "../types";
 import sharp from "sharp";
 import { addDebugLogToClass } from "./class-debug";
 import createDebug from "debug";
+import { WidthAndHeight } from "./internal-types";
+import { intersect, parseSize } from "./utils/sizes";
 
 type WithDriver<T> = T & { driver: WebDriver };
 
@@ -13,8 +14,8 @@ type CallbackWithDriver<P, R> = (argWithDriver: WithDriver<P>) => Promise<R>;
 export class Browser {
 	public readonly driver: WebDriver;
 	public readonly id: string;
-	private viewportSize: Extent;
-	private storyviewSize: Extent;
+	private viewportSize: WidthAndHeight;
+	private storyviewSize: WidthAndHeight;
 
 	constructor(seleniumUrl: string, browser: BrowserSpecification) {
 		this.id = browser.id;
@@ -28,11 +29,11 @@ export class Browser {
 		await this.driver.get("about:blank");
 		await this.driver.manage().window().maximize();
 		await this.driver.executeScript(setupStoryviewIframe, screenshotUrl);
-		this.viewportSize = await Extent.of(await this.driver.executeScript(getViewportSize));
+		this.viewportSize = await this.driver.executeScript(getViewportSize);
 	}
 
 	async resizeTo(size: WidthXHeightString): Promise<void> {
-		this.storyviewSize = Extent.fromSizeString(size);
+		this.storyviewSize = parseSize(size);
 		return this.driver.executeScript(
 			resizeStoryview,
 			this.storyviewSize.width,
@@ -50,7 +51,7 @@ export class Browser {
 	async takeScreenshot(): Promise<Buffer> {
 		const windowScreenshotBase64 = await this.driver.takeScreenshot();
 		const windowScreenshot = Buffer.from(windowScreenshotBase64, "base64");
-		const actualSize = this.storyviewSize.intersection(this.viewportSize);
+		const actualSize = intersect(this.storyviewSize, this.viewportSize);
 		return this.extractStoryViewFromScreenshot(windowScreenshot, actualSize);
 	}
 

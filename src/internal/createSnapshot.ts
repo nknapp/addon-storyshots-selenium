@@ -2,14 +2,14 @@
 import createDebug from "debug";
 import { toMatchImageSnapshot } from "jest-image-snapshot";
 
-import { forEachSequential } from "./foreach-sequential";
+import { forEachSequential } from "./utils/foreach-sequential";
 import {
 	AfterEachScreenshotFunction,
 	BeforeScreenshotsFunction,
 	GetMatchOptionsFunction,
 	WidthXHeightString,
 } from "../types";
-import { createSectionDebug } from "./section-debug";
+import { createSectionDebug } from "./utils/section-debug";
 import { getDefaultMatchOptions } from "./defaultOptions";
 import { Browser } from "./browser";
 

@@ -1,6 +1,6 @@
 import createDebug from "debug";
 import { createSectionDebug, DebugLite } from "./section-debug";
-import { waitMillis } from "..";
+import { waitMillis } from "../../index";
 
 const TEST_DEBUG_SCOPE = "addon-storyhots-selenium:test";
 
