@@ -14,10 +14,6 @@ export class Extent implements WidthAndHeight {
 		this.height = height;
 	}
 
-	visiblePartWithin(other: WidthAndHeight): Extent {
-		return this.intersection(other);
-	}
-
 	intersection(other: WidthAndHeight): Extent {
 		return new Extent({
 			width: Math.min(this.width, other.width),
