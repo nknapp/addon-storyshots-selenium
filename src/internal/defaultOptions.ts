@@ -1,4 +1,4 @@
-import { OptionalImageSnapshotOptions, StorybookContext, WidthXHeightString } from "../types";
+import { GetMatchOptionsOptions, OptionalImageSnapshotOptions } from "../types";
 import { doNothing, waitMillis } from "../public-utils";
 import path from "path";
 import { MatchImageSnapshotOptions } from "jest-image-snapshot";
@@ -9,7 +9,7 @@ export const defaultOptions: OptionalImageSnapshotOptions = {
 	beforeFirstScreenshot: waitMillis(1000),
 	beforeEachScreenshot: waitMillis(200),
 	afterEachScreenshot: doNothing(),
-	getMatchOptions: doNothing(),
+	getMatchOptions: () => ({}),
 	snapshotBaseDirectory: path.join("src", "__image_snapshots_selenium__"),
 	seleniumUrl: process.env.SELENIUM_URL || "http://localhost:4444/wd/hub",
 	testTimeoutMillis: 60000,
@@ -19,9 +19,7 @@ export const defaultOptions: OptionalImageSnapshotOptions = {
 
 export function getDefaultMatchOptions(
 	snapshotBaseDirectory: string,
-	context: StorybookContext,
-	size: WidthXHeightString,
-	browserId: string
+	{ context, size, browserId }: GetMatchOptionsOptions
 ): MatchImageSnapshotOptions {
 	return {
 		customSnapshotsDir: path.join(snapshotBaseDirectory, context.story.id),

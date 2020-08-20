@@ -1,4 +1,4 @@
-import { Browser } from "./browser";
+import { createBrowser } from "./browser";
 import { willBeInitialized } from "./test-utils/will-be-initialized";
 import { By } from "selenium-webdriver";
 import { toMatchImageSnapshot } from "jest-image-snapshot";
@@ -11,10 +11,10 @@ function htmlAsDataUrl(strings: TemplateStringsArray, ...substitutions: string[]
 	return "data:text/html;base64," + htmlAsBase64;
 }
 
-let browser: Browser = willBeInitialized();
+let browser: ReturnType<typeof createBrowser> = willBeInitialized();
 
 beforeAll(() => {
-	browser = new Browser("http://localhost:24444/wd/hub", {
+	browser = createBrowser("http://localhost:24444/wd/hub", {
 		id: "chrome",
 		capabilities: {
 			browserName: "chrome",

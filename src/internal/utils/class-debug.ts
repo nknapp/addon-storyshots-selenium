@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-types */
-import { createSectionDebug } from "./utils/section-debug";
+import { createSectionDebug } from "./section-debug";
 
 export interface DebugLite {
 	(...args: any[]): void;

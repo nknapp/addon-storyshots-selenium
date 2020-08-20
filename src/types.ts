@@ -1,19 +1,22 @@
 import { MatchImageSnapshotOptions } from "jest-image-snapshot";
 import { WebDriver } from "selenium-webdriver";
 
-export interface LifeCycleMethod {
-	(): Promise<void>;
-	timeout?: number;
-}
-
 /**
  * The result-type of the "imageSnapshot" method.
  */
 export interface TestMethod {
-	(story: any, context: any): any;
-	beforeAll?: LifeCycleMethod;
-	afterAll?: LifeCycleMethod;
-	timeout?: number;
+	(context: StorybookContext): any;
+	beforeAll: LifeCycleMethod;
+	afterAll: LifeCycleMethod;
+	timeout: number;
+}
+
+/**
+ * beforeAll and afterAll methods of result-type
+ */
+export interface LifeCycleMethod {
+	(): Promise<void>;
+	timeout: number;
 }
 
 /**
@@ -21,26 +24,39 @@ export interface TestMethod {
  */
 export type WidthXHeightString = string;
 
-interface BeforeScreenshotsOptions {
-	driver: WebDriver;
+export interface BasicHookOptions {
 	context: StorybookContext | any;
-	screenshotUrl: string;
+	url: string;
+	browserId: string;
 }
 
-export type BeforeScreenshotsFunction = (options: BeforeScreenshotsOptions) => Promise<void>;
+export type BeforeFirstScreenshotFunction = (
+	driver: WebDriver,
+	options: BasicHookOptions
+) => Promise<void>;
 
-interface AfterEachScreenshotOptions {
-	context: StorybookContext | any;
-	screenshot: Buffer;
+export interface WithSize {
+	size: WidthXHeightString;
 }
 
-export type AfterEachScreenshotFunction = (options: AfterEachScreenshotOptions) => Promise<void>;
+export type BeforeEachScreenshotFunction = (
+	driver: WebDriver,
+	options: BasicHookOptions & WithSize
+) => Promise<void>;
+
+export interface WithImage {
+	image: Buffer;
+}
+
+export type AfterEachScreenshotFunction = (
+	options: BasicHookOptions & WithImage & WithSize
+) => Promise<void>;
+
+export type GetMatchOptionsOptions = BasicHookOptions & WithSize;
 
 export type GetMatchOptionsFunction = (
-	context: StorybookContext | any,
-	screenshotUrl: string,
-	size: WidthXHeightString
-) => void | Promise<MatchImageSnapshotOptions | void>;
+	options: GetMatchOptionsOptions
+) => Promise<Partial<MatchImageSnapshotOptions>> | Partial<MatchImageSnapshotOptions>;
 
 export interface BrowserSpecification {
 	id: string;
@@ -73,8 +89,8 @@ export interface OptionalImageSnapshotOptions {
 	testTimeoutMillis: number;
 	setupTimeoutMillis: number;
 	teardownTimeoutMillis: number;
-	beforeFirstScreenshot: BeforeScreenshotsFunction;
-	beforeEachScreenshot: BeforeScreenshotsFunction;
+	beforeFirstScreenshot: BeforeFirstScreenshotFunction;
+	beforeEachScreenshot: BeforeEachScreenshotFunction;
 	afterEachScreenshot: AfterEachScreenshotFunction;
 	getMatchOptions: GetMatchOptionsFunction;
 	snapshotBaseDirectory: string;
@@ -90,9 +106,17 @@ export type ImageSnapshotOptions = Partial<OptionalImageSnapshotOptions> &
 	RequiredImageSnapshotOptions;
 
 export interface StorybookContext {
+	kind: string;
 	story: StorybookStory;
 }
 
 export interface StorybookStory {
 	id: string;
+	parameters?: {
+		storyshotSelenium?: StoryParameters;
+	};
+}
+
+export interface StoryParameters {
+	sizes: WidthXHeightString[];
 }

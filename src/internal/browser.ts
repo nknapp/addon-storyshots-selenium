@@ -2,20 +2,29 @@ import { Builder, WebDriver } from "selenium-webdriver";
 import { getViewportSize, resizeStoryview, setupStoryviewIframe } from "./in-page-scripts";
 import { BrowserSpecification, WidthXHeightString } from "../types";
 import sharp from "sharp";
-import { addDebugLogToClass } from "./class-debug";
 import createDebug from "debug";
 import { WidthAndHeight } from "./internal-types";
 import { intersect, parseSize } from "./utils/sizes";
+import { addDebugLogAllMethods } from "./utils/class-debug";
 
-type WithDriver<T> = T & { driver: WebDriver };
+const debug = createDebug("addon-storyshot-selenium:browser");
 
-type CallbackWithDriver<P, R> = (argWithDriver: WithDriver<P>) => Promise<R>;
+export interface Browser {
+	readonly id: string;
+	readonly driver: WebDriver;
+	prepareBrowser(url: string): Promise<void>;
+	resizeTo(size: WidthXHeightString): Promise<void>;
+	takeScreenshot(): Promise<Buffer>;
+	close(): Promise<void>;
+	getCurrentUrl(): string;
+}
 
-export class Browser {
-	public readonly driver: WebDriver;
-	public readonly id: string;
+class BrowserImpl implements Browser {
+	readonly driver: WebDriver;
+	readonly id: string;
 	private viewportSize: WidthAndHeight;
 	private storyviewSize: WidthAndHeight;
+	private currentUrl: string;
 
 	constructor(seleniumUrl: string, browser: BrowserSpecification) {
 		this.id = browser.id;
@@ -25,10 +34,11 @@ export class Browser {
 			.build();
 	}
 
-	async prepareBrowser(screenshotUrl: string): Promise<void> {
+	async prepareBrowser(url: string): Promise<void> {
+		this.currentUrl = url;
 		await this.driver.get("about:blank");
 		await this.driver.manage().window().maximize();
-		await this.driver.executeScript(setupStoryviewIframe, screenshotUrl);
+		await this.driver.executeScript(setupStoryviewIframe, url);
 		this.viewportSize = await this.driver.executeScript(getViewportSize);
 	}
 
@@ -39,13 +49,6 @@ export class Browser {
 			this.storyviewSize.width,
 			this.storyviewSize.height
 		);
-	}
-
-	async callHook<P, R>(callback: CallbackWithDriver<P, R>, args: P): Promise<R> {
-		return callback({
-			...args,
-			driver: this.driver,
-		});
 	}
 
 	async takeScreenshot(): Promise<Buffer> {
@@ -68,13 +71,19 @@ export class Browser {
 		}
 	}
 
-	public async close(): Promise<void> {
+	async close(): Promise<void> {
 		await this.driver.close();
+	}
+
+	getCurrentUrl(): string {
+		return this.currentUrl;
 	}
 }
 
-export const DebugLoggingBrowser: typeof Browser = addDebugLogToClass(
-	createDebug("addon-storyshots-selenium:browser-trace"),
-	(driver, browserId) => `WebDriverActions(${browserId})`,
-	Browser
-);
+export function createBrowser(
+	seleniumUrl: string,
+	browserSpecification: BrowserSpecification
+): Browser {
+	const browser = new BrowserImpl(seleniumUrl, browserSpecification);
+	return addDebugLogAllMethods(debug, browser.id, browser);
+}

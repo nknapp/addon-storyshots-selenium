@@ -13,7 +13,7 @@ module.exports = {
 	env: {
 		production: {
 			comments: false,
-			ignore: ["src/**/*.test.ts", "src/internal/test-utils/**"],
+			ignore: ["src/**/*.test.ts", "src/internal/test-utils/**", "src/**/__mocks__/**"],
 		},
 	},
 };

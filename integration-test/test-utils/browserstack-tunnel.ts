@@ -1,6 +1,6 @@
 import browserstack from "browserstack-local";
 import createDebug from "debug";
-import { addDebugLogAllMethods } from "../../src/internal/class-debug";
+import { addDebugLogAllMethods } from "../../src/internal/utils/class-debug";
 const debug = createDebug("addon-storyshot-selenium:browserstack-tunnel");
 const browserstackTunnel = new browserstack.Local();
 
