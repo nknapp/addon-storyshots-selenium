@@ -2,20 +2,26 @@ import { Session, WebDriver } from "selenium-webdriver";
 import { BrowserSpecification } from "../../types";
 import { Browser } from "../browser";
 
-const pixelGraphic = Buffer.from(
+export const pixelGraphic = Buffer.from(
 	"iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
 	"base64"
 );
 
-const mockWebdriver = new WebDriver(
+export const mockWebdriver = new WebDriver(
 	new Promise<Session>(() => {
-		/* empty mock */
+		// We actually only need the webdriver as an object to pass around.
+		// Therefore we don't need an existing session. In order to
+		// avoid unnecessary work, we just never resolve this promise.
 	}),
 	{
 		defineCommand: jest.fn(),
 		execute: jest.fn(),
 	}
 );
+
+mockWebdriver.toString = () => "mockWebdriver";
+mockWebdriver["toJSON"] = () => "mockWebdriver";
+mockWebdriver["inspect"] = () => "mockWebdriver";
 
 export function createBrowserMockImplementation(
 	seleniumUrl: string,

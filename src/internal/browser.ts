@@ -65,8 +65,9 @@ class BrowserImpl implements Browser {
 				.png({ compressionLevel: 9 })
 				.toBuffer();
 		} catch (error) {
+			/* istanbul ignore next This should never happen */
 			throw new Error(
-				`Error extracting screenshot of size ${width}x${height} for browser "${this.id}"`
+				`Error extracting screenshot of size ${width}x${height} for browser "${this.id}": ${error.message}`
 			);
 		}
 	}

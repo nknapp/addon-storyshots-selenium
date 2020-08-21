@@ -1,4 +1,4 @@
-import { addDebugLogAllMethods, addDebugLogToClass, DebugLite } from "./class-debug";
+import { addDebugLogAllMethods, DebugLite } from "./class-debug";
 
 describe("The 'addDebugLogAllMethods'-function", () => {
 	let outputCollector = [];
@@ -144,46 +144,6 @@ describe("The 'addDebugLogAllMethods'-function", () => {
 			});
 			expect(proxy.aProperty).toEqual(5);
 		});
-	});
-});
-
-describe("The 'addDebugLogToClass' function", () => {
-	let outputCollector = [];
-	const dummyDebug: DebugLite = createDummyDebug((...args) => outputCollector.push(args));
-
-	beforeEach(() => {
-		outputCollector = [];
-		dummyDebug.enabled = true;
-	});
-
-	it("adds the debug log to a constructed class", () => {
-		class TestClass {
-			private message: string;
-			constructor(message: string) {
-				this.message = message;
-			}
-			outer() {
-				outputCollector.push("outer");
-				this.inner();
-			}
-			inner() {
-				outputCollector.push("inner");
-			}
-		}
-
-		const TestClassWithDebugLog = addDebugLogToClass(dummyDebug, () => "testLogger", TestClass);
-
-		const loggingObject = new TestClassWithDebugLog("some message");
-		loggingObject.outer();
-
-		expect(outputCollector).toEqual([
-			['section "testLogger#outer" starting'],
-			"outer",
-			['section "testLogger#inner" starting'],
-			"inner",
-			['section "testLogger#inner" done'],
-			['section "testLogger#outer" done'],
-		]);
 	});
 });
 

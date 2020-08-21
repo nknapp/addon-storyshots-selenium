@@ -42,7 +42,7 @@ export async function toTakeMillisToResolve(
 
 	return {
 		pass: true,
-		message: () => `Resolved after ${millis} milliseconds`,
+		message: () => `Promise took about ${millis} milliseconds to resolve`,
 	};
 }
 

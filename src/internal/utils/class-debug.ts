@@ -27,19 +27,3 @@ export function addDebugLogAllMethods<T extends object>(
 		},
 	});
 }
-
-export function addDebugLogToClass<T extends object>(
-	debug: DebugLite,
-	scopeProvider: (...constructorArgs) => string,
-	wrappedClass: T
-): T {
-	if (!debug.enabled) {
-		return wrappedClass;
-	}
-	return new Proxy<T>(wrappedClass, {
-		construct(target: T, argArray: any): object {
-			const newInstance: object = new (target as any)(...argArray);
-			return addDebugLogAllMethods(debug, scopeProvider(...argArray), newInstance);
-		},
-	});
-}

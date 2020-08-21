@@ -224,6 +224,17 @@ describe("index", () => {
 		expect(browsers[0].value.close).toHaveBeenCalled();
 		expect(browsers[1].value.close).toHaveBeenCalled();
 	});
+
+	it("afterAll ignore missing browsers", async () => {
+		createSnapshotterMock.mockReturnValue({
+			createSnapshots: jest.fn(),
+			errors: [],
+		});
+
+		const testMethod = imageSnapshot({ browsers: [CHROME, FIREFOX] });
+
+		await expect(() => testMethod.afterAll()).not.toThrow();
+	});
 });
 
 async function runTestMethodWithLifeCycle(

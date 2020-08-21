@@ -12,7 +12,6 @@ function htmlAsDataUrl(strings: TemplateStringsArray, ...substitutions: string[]
 }
 
 let browser: ReturnType<typeof createBrowser> = willBeInitialized();
-
 beforeAll(() => {
 	browser = createBrowser("http://localhost:24444/wd/hub", {
 		id: "chrome",
@@ -29,7 +28,9 @@ beforeEach(async () => {
 });
 
 afterAll(async () => {
-	await browser.close();
+	if (browser != null) {
+		await browser.close();
+	}
 });
 
 describe("prepareBrowser", () => {
@@ -70,4 +71,9 @@ describe("resizeTo and takeScreenshot", () => {
 		const screenshot = await browser.takeScreenshot();
 		expect(screenshot).toMatchImageSnapshot();
 	}, 200000);
+});
+
+test("getCurrentUrl returns the current url", async () => {
+	await browser.prepareBrowser("http://target.url");
+	expect(browser.getCurrentUrl()).toEqual("http://target.url");
 });
