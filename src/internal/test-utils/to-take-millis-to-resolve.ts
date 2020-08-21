@@ -1,5 +1,14 @@
 const THRESHOLD = 50;
 
+declare global {
+	// eslint-disable-next-line @typescript-eslint/no-namespace
+	namespace jest {
+		interface Matchers<R, T> {
+			toTakeMillisToResolve(millis: number): R;
+		}
+	}
+}
+
 export async function toTakeMillisToResolve(
 	factory: () => Promise<unknown>,
 	millis: number
@@ -8,13 +17,16 @@ export async function toTakeMillisToResolve(
 
 	const done = factory().then(afterwards);
 
-	jest.advanceTimersByTime(millis - THRESHOLD);
-	await Promise.resolve();
-	if (afterwards.mock.calls.length > 0) {
-		return {
-			pass: false,
-			message: () => `Promise was resolved at least ${THRESHOLD} millis to early`,
-		};
+	const lowerThreshold = millis - THRESHOLD;
+	if (lowerThreshold > 0) {
+		jest.advanceTimersByTime(lowerThreshold);
+		await Promise.resolve();
+		if (afterwards.mock.calls.length > 0) {
+			return {
+				pass: false,
+				message: () => `Promise was resolved at least ${THRESHOLD} millis to early`,
+			};
+		}
 	}
 
 	jest.advanceTimersByTime(2 * THRESHOLD);
@@ -35,12 +47,3 @@ export async function toTakeMillisToResolve(
 }
 
 expect.extend({ toTakeMillisToResolve });
-
-declare global {
-	// eslint-disable-next-line @typescript-eslint/no-namespace
-	namespace jest {
-		interface Matchers<R, T> {
-			toTakeMillisToResolve(millis: number): R;
-		}
-	}
-}

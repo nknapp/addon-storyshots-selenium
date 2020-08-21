@@ -1,9 +1,9 @@
 import { imageSnapshot } from "./index";
-import { createBrowser } from "./internal/browser";
+import { Browser, createBrowser } from "./internal/browser";
 import { createSnapshotter, SnapshotterOptions } from "./internal/snapshotter";
 import { ImageSnapshotOptions, StorybookContext } from "./types";
 import { createBrowserMockImplementation } from "./internal/__mocks__/browser";
-import "./internal/test-utils/resolves-after";
+import "./internal/test-utils/to-take-millis-to-resolve";
 
 jest.mock("./internal/browser");
 const createBrowserMock = createBrowser as jest.MockedFunction<typeof createBrowser>;
@@ -33,6 +33,16 @@ const CHROME = {
 const CONTEXT = { kind: "a-kind", story: { id: "a-story" } };
 
 describe("index", () => {
+	let consoleErrorSpy: jest.SpyInstance;
+
+	beforeEach(() => {
+		consoleErrorSpy = jest.spyOn(console, "error");
+	});
+
+	afterEach(() => {
+		consoleErrorSpy.mockReset();
+	});
+
 	it("returns a test-method with beforeAll and afterAll hooks", async () => {
 		const testMethod = imageSnapshot({
 			browsers: [
@@ -74,11 +84,13 @@ describe("index", () => {
 		});
 	});
 
-	describe("applies default values when creating the snapshotter", async () => {
-		const DEFAULT_OPTIONS = { browsers: [CHROME] };
-
+	describe("applies default values when creating the snapshotter", () => {
 		beforeEach(() => {
 			jest.useFakeTimers();
+			createSnapshotterMock.mockReturnValue({
+				createSnapshots: jest.fn(),
+				errors: [],
+			});
 		});
 
 		afterEach(() => {
@@ -86,17 +98,17 @@ describe("index", () => {
 		});
 
 		it("passes 'context'", async () => {
-			const actualOptions = await getActualSnapshotterOptions(DEFAULT_OPTIONS, CONTEXT);
+			const actualOptions = await getActualSnapshotterOptions({}, CONTEXT);
 			expect(actualOptions.context).toEqual(CONTEXT);
 		});
 
-		it("passes 'sizes'", async () => {
-			const actualOptions = await getActualSnapshotterOptions(DEFAULT_OPTIONS, CONTEXT);
+		it("uses default 'sizes'", async () => {
+			const actualOptions = await getActualSnapshotterOptions({}, CONTEXT);
 			expect(actualOptions.sizes).toEqual(["1024x768"]);
 		});
 
 		it("uses the default 'match-options'", async () => {
-			const actualOptions = await getActualSnapshotterOptions(DEFAULT_OPTIONS, CONTEXT);
+			const actualOptions = await getActualSnapshotterOptions({}, CONTEXT);
 			const actualMatchOptions = actualOptions.getMatchOptions({
 				browserId: "firefox",
 				context: CONTEXT,
@@ -109,38 +121,108 @@ describe("index", () => {
 			});
 		});
 
-		it("uses the default 'beforeFirstScreenshot", async () => {
-			const actualOptions = await getActualSnapshotterOptions(DEFAULT_OPTIONS, CONTEXT);
-			expect(actualOptions.beforeFirstScreenshot).toTakeMillisToResolve(1000);
+		it("uses the default 'beforeFirstScreenshot'-function", async () => {
+			const actualOptions = await getActualSnapshotterOptions({}, CONTEXT);
+			await expect(actualOptions.beforeFirstScreenshot).toTakeMillisToResolve(1000);
 		});
-		it("uses the default 'beforeEachScreenshot", async () => {
-			const actualOptions = await getActualSnapshotterOptions(DEFAULT_OPTIONS, CONTEXT);
-			expect(actualOptions.beforeEachScreenshot).toTakeMillisToResolve(200);
+		it("uses the default 'beforeEachScreenshot'-function", async () => {
+			const actualOptions = await getActualSnapshotterOptions({}, CONTEXT);
+			await expect(actualOptions.beforeEachScreenshot).toTakeMillisToResolve(200);
 		});
-		it("uses the default 'afterEachScreenshot", async () => {
-			const actualOptions = await getActualSnapshotterOptions(DEFAULT_OPTIONS, CONTEXT);
-			expect(actualOptions.afterEachScreenshot).toTakeMillisToResolve(0);
+		it("uses the default 'afterEachScreenshot'-function", async () => {
+			const actualOptions = await getActualSnapshotterOptions({}, CONTEXT);
+			await expect(actualOptions.afterEachScreenshot).toTakeMillisToResolve(0);
 		});
 	});
 
-	it("applies provided options when calling createSnapshot", () => {
-		fail("not yet implemented");
+	describe("applies provided options when calling createSnapshot", () => {
+		beforeEach(() => {
+			createSnapshotterMock.mockReturnValue({
+				createSnapshots: jest.fn(),
+				errors: [],
+			});
+		});
+		it("uses the provided 'sizes'", async () => {
+			const actualOptions = await getActualSnapshotterOptions({ sizes: ["100x100"] }, CONTEXT);
+			expect(actualOptions.sizes).toEqual(["100x100"]);
+		});
+
+		it("uses the provided 'merges the getMatchOptions'", async () => {
+			const getMatchOptions = () => ({ customSnapshotsDir: "aaa" });
+			const actualOptions = await getActualSnapshotterOptions({ getMatchOptions }, CONTEXT);
+			const matchOptions = actualOptions.getMatchOptions({
+				browserId: "firefox",
+				context: CONTEXT,
+				size: "1024x768",
+				url: "http://example.com",
+			});
+			expect(matchOptions).toEqual({
+				customSnapshotIdentifier: "a-story-1024x768-firefox",
+				customSnapshotsDir: "aaa",
+			});
+		});
+
+		it("uses the provided 'beforeFirstScreenshot'-function", async () => {
+			const beforeFirstScreenshot = jest.fn();
+			const actualOptions = await getActualSnapshotterOptions({ beforeFirstScreenshot }, CONTEXT);
+			expect(actualOptions.beforeFirstScreenshot).toBe(beforeFirstScreenshot);
+		});
+		it("uses the default 'beforeEachScreenshot'-function", async () => {
+			const beforeEachScreenshot = jest.fn();
+			const actualOptions = await getActualSnapshotterOptions({ beforeEachScreenshot }, CONTEXT);
+			expect(actualOptions.beforeEachScreenshot).toBe(beforeEachScreenshot);
+		});
+		it("uses the default 'afterEachScreenshot'-function", async () => {
+			const afterEachScreenshot = jest.fn();
+			const actualOptions = await getActualSnapshotterOptions({ afterEachScreenshot }, CONTEXT);
+			expect(actualOptions.afterEachScreenshot).toBe(afterEachScreenshot);
+		});
 	});
 
-	it("throws if the errors-property of the snapshotter is not empty after execution", () => {
-		fail("not yet implemented");
+	it("if the errors-property of the snapshotter is not empty after execution, it throws the first and logs the others", async () => {
+		createSnapshotterMock.mockReturnValue({
+			createSnapshots: jest.fn(),
+			errors: [new Error("error1"), new Error("error2")],
+		});
+
+		await expect(() => runTestMethodWithLifeCycle({ browsers: [CHROME] }, CONTEXT)).rejects.toThrow(
+			/error1/
+		);
+
+		expect(consoleErrorSpy).toHaveBeenCalledWith(expect.stringMatching(/Found 2 errors/));
 	});
 
-	it("creates browsers with the correct options", () => {
-		fail("not yet implemented");
+	it("creates browsers with the correct options", async () => {
+		createSnapshotterMock.mockReturnValue({
+			createSnapshots: jest.fn(),
+			errors: [],
+		});
+		const seleniumUrl = "http://someUrl:9009";
+
+		const testMethod = imageSnapshot({ seleniumUrl, browsers: [CHROME, FIREFOX] });
+
+		await testMethod.beforeAll();
+
+		expect(createBrowserMock).toHaveBeenCalledTimes(2);
+		expect(createBrowserMock).toHaveBeenCalledWith(seleniumUrl, CHROME);
+		expect(createBrowserMock).toHaveBeenCalledWith(seleniumUrl, FIREFOX);
 	});
 
-	it("closes all browsers afterwards", () => {
-		fail("not yet implemented");
-	});
+	it("closes all browsers afterwards", async () => {
+		createSnapshotterMock.mockReturnValue({
+			createSnapshots: jest.fn(),
+			errors: [],
+		});
 
-	it("closes all browsers aftwareds, if tests fail", () => {
-		fail("not yet implemented");
+		const testMethod = imageSnapshot({ browsers: [CHROME, FIREFOX] });
+
+		await testMethod.beforeAll();
+		await testMethod.afterAll();
+
+		const browsers: jest.MockResult<Browser>[] = createBrowserMock.mock.results;
+		expect(browsers.length).toEqual(2);
+		expect(browsers[0].value.close).toHaveBeenCalled();
+		expect(browsers[1].value.close).toHaveBeenCalled();
 	});
 });
 
@@ -152,16 +234,16 @@ async function runTestMethodWithLifeCycle(
 
 	await testMethod.beforeAll();
 	try {
-		testMethod(context);
+		await testMethod(context);
 	} finally {
 		await testMethod.afterAll();
 	}
 }
 
 async function getActualSnapshotterOptions(
-	options: ImageSnapshotOptions,
+	nonRequiredOptions: Partial<ImageSnapshotOptions>,
 	context: StorybookContext
 ): Promise<SnapshotterOptions> {
-	await runTestMethodWithLifeCycle(options, context);
+	await runTestMethodWithLifeCycle({ browsers: [CHROME], ...nonRequiredOptions }, context);
 	return createSnapshotterMock.mock.calls[0][0];
 }
