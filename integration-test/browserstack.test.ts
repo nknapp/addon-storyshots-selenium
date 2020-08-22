@@ -51,7 +51,7 @@ if (process.env.BROWSERSTACK_ACCESS_KEY == null || process.env.BROWSERSTACK_USER
 			capabilities: {
 				os: "os x",
 				browserName: "safari",
-				browser_version: "latest",
+				browser_version: "13.1.1",
 				resolution: "1920x1080",
 				"browserstack.local": true,
 				"browserstack.localIdentifier": localIdentifier,
