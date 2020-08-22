@@ -1,3 +1,5 @@
+# [0.2.0](https://github.com/nknapp/addons-storyshots-selenium/compare/v0.1.0...v0.2.0) (2020-08-22)
+
 # 0.1.0 (2020-08-09)
 
 ### Bug Fixes
