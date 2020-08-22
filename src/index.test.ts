@@ -122,6 +122,8 @@ describe("index", () => {
 				},
 				customSnapshotIdentifier: "a-story-1024x768-firefox",
 				customSnapshotsDir: "src/__image_snapshots_selenium__/a-story",
+				failureThreshold: 10,
+				failureThresholdType: "pixel",
 			});
 		});
 
@@ -167,6 +169,8 @@ describe("index", () => {
 				},
 				customSnapshotIdentifier: "a-story-1024x768-firefox",
 				customSnapshotsDir: "aaa",
+				failureThreshold: 10,
+				failureThresholdType: "pixel",
 			});
 		});
 

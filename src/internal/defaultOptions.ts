@@ -28,5 +28,7 @@ export function getDefaultMatchOptions(
 			threshold: 0.02,
 			includeAA: true,
 		},
+		failureThreshold: 10,
+		failureThresholdType: "pixel",
 	};
 }
