@@ -3,6 +3,8 @@
 
 # Interface: LifeCycleMethod
 
+beforeAll and afterAll methods of result-type
+
 ## Hierarchy
 
 - **LifeCycleMethod**
@@ -12,7 +14,9 @@
 ▸ (): _Promise‹void›_
 
 _Defined in
-[src/types.ts:5](https://github.com/nknapp/addons-storyshots-selenium/blob/master/src/types.ts#L5)_
+[src/types.ts:17](https://github.com/nknapp/addons-storyshots-selenium/blob/master/src/types.ts#L17)_
+
+beforeAll and afterAll methods of result-type
 
 **Returns:** _Promise‹void›_
 
@@ -20,13 +24,13 @@ _Defined in
 
 ### Properties
 
-- [timeout](lifecyclemethod.md#optional-timeout)
+- [timeout](lifecyclemethod.md#timeout)
 
 ## Properties
 
-### `Optional` timeout
+### timeout
 
-• **timeout**? : _number_
+• **timeout**: _number_
 
 _Defined in
-[src/types.ts:7](https://github.com/nknapp/addons-storyshots-selenium/blob/master/src/types.ts#L7)_
+[src/types.ts:19](https://github.com/nknapp/addons-storyshots-selenium/blob/master/src/types.ts#L19)_

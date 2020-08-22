@@ -11,22 +11,18 @@ The result-type of the "imageSnapshot" method.
 
 ## Callable
 
-▸ (`story`: any, `context`: any, `renderTree`: RenderTree, `options?`:
-any): _any_
+▸ (`context`: [StorybookContext](storybookcontext.md)): _any_
 
 _Defined in
-[src/types.ts:13](https://github.com/nknapp/addons-storyshots-selenium/blob/master/src/types.ts#L13)_
+[src/types.ts:7](https://github.com/nknapp/addons-storyshots-selenium/blob/master/src/types.ts#L7)_
 
 The result-type of the "imageSnapshot" method.
 
 **Parameters:**
 
-| Name         | Type       |
-| ------------ | ---------- |
-| `story`      | any        |
-| `context`    | any        |
-| `renderTree` | RenderTree |
-| `options?`   | any        |
+| Name      | Type                                    |
+| --------- | --------------------------------------- |
+| `context` | [StorybookContext](storybookcontext.md) |
 
 **Returns:** _any_
 
@@ -34,33 +30,33 @@ The result-type of the "imageSnapshot" method.
 
 ### Properties
 
-- [afterAll](testmethod.md#optional-afterall)
-- [beforeAll](testmethod.md#optional-beforeall)
-- [timeout](testmethod.md#optional-timeout)
+- [afterAll](testmethod.md#afterall)
+- [beforeAll](testmethod.md#beforeall)
+- [timeout](testmethod.md#timeout)
 
 ## Properties
 
-### `Optional` afterAll
+### afterAll
 
-• **afterAll**? : _[LifeCycleMethod](lifecyclemethod.md)_
+• **afterAll**: _[LifeCycleMethod](lifecyclemethod.md)_
 
 _Defined in
-[src/types.ts:16](https://github.com/nknapp/addons-storyshots-selenium/blob/master/src/types.ts#L16)_
+[src/types.ts:10](https://github.com/nknapp/addons-storyshots-selenium/blob/master/src/types.ts#L10)_
 
 ---
 
-### `Optional` beforeAll
+### beforeAll
 
-• **beforeAll**? : _[LifeCycleMethod](lifecyclemethod.md)_
+• **beforeAll**: _[LifeCycleMethod](lifecyclemethod.md)_
 
 _Defined in
-[src/types.ts:15](https://github.com/nknapp/addons-storyshots-selenium/blob/master/src/types.ts#L15)_
+[src/types.ts:9](https://github.com/nknapp/addons-storyshots-selenium/blob/master/src/types.ts#L9)_
 
 ---
 
-### `Optional` timeout
+### timeout
 
-• **timeout**? : _number_
+• **timeout**: _number_
 
 _Defined in
-[src/types.ts:17](https://github.com/nknapp/addons-storyshots-selenium/blob/master/src/types.ts#L17)_
+[src/types.ts:11](https://github.com/nknapp/addons-storyshots-selenium/blob/master/src/types.ts#L11)_

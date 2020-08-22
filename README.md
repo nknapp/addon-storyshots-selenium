@@ -61,7 +61,7 @@ The integration-tests in this repository are a good example for how to
 setup tests using this repository.
 
 - The
-  [docker-selenium integration test](integration-tests/docker-selenium.test.ts)
+  [docker-selenium integration test](integration-test/docker-selenium.test.ts)
   uses the docker-image
   [docker-image](https://github.com/containerize-my-server/docker-image-selenium-with-tunnel)
   to start a selenium grid. It is based upon
@@ -70,7 +70,7 @@ setup tests using this repository.
   storybook-server on the host, or on the "build-container" in
   Gitlab-CI.
 - The
-  [BrowerStack integration test](integration-tests/browserstack.test.ts-snapshots)
+  [BrowerStack integration test](integration-test/browserstack.test.ts-snapshots)
   uses BrowserStack-Automate to create screenshots. It starts a
   BrowserStackLocal-Tunnel to give BrowserStack access to your local
   server.

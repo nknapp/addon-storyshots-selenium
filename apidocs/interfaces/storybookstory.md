@@ -12,6 +12,7 @@
 ### Properties
 
 - [id](storybookstory.md#id)
+- [parameters](storybookstory.md#optional-parameters)
 
 ## Properties
 
@@ -20,4 +21,17 @@
 • **id**: _string_
 
 _Defined in
-[src/types.ts:98](https://github.com/nknapp/addons-storyshots-selenium/blob/master/src/types.ts#L98)_
+[src/types.ts:114](https://github.com/nknapp/addons-storyshots-selenium/blob/master/src/types.ts#L114)_
+
+---
+
+### `Optional` parameters
+
+• **parameters**? : _object_
+
+_Defined in
+[src/types.ts:115](https://github.com/nknapp/addons-storyshots-selenium/blob/master/src/types.ts#L115)_
+
+#### Type declaration:
+
+- **storyshotSelenium**? : _[StoryParameters](storyparameters.md)_
