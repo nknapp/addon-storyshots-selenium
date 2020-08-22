@@ -24,5 +24,9 @@ export function getDefaultMatchOptions(
 	return {
 		customSnapshotsDir: path.join(snapshotBaseDirectory, context.story.id),
 		customSnapshotIdentifier: `${context.story.id}-${size}-${browserId}`,
+		customDiffConfig: {
+			threshold: 0.02,
+			includeAA: true,
+		},
 	};
 }
