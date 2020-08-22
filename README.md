@@ -90,8 +90,8 @@ The API-docs are generated with TypeDoc. The main entrypoints is
 
 Some utilities can be used as well to facilitate configuration:
 
-- [doNothing](README.md#donothing)
-- [waitMillis](README.md#waitmillis)
+- [doNothing](./apidocs/README.md#donothing)
+- [waitMillis](./apidocs/README.md#waitmillis)
 
 # How it works
 

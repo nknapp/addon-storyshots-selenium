@@ -11,8 +11,6 @@
 - [LifeCycleMethod](interfaces/lifecyclemethod.md)
 - [OptionalImageSnapshotOptions](interfaces/optionalimagesnapshotoptions.md)
 - [RequiredImageSnapshotOptions](interfaces/requiredimagesnapshotoptions.md)
-- [ReverseTunnelOptions](interfaces/reversetunneloptions.md)
-- [StaticFileServer](interfaces/staticfileserver.md)
 - [StoryParameters](interfaces/storyparameters.md)
 - [StorybookContext](interfaces/storybookcontext.md)
 - [StorybookStory](interfaces/storybookstory.md)
@@ -34,36 +32,13 @@
 
 ### Variables
 
-- [REMOTE_TUNNEL_PORT](README.md#const-remote_tunnel_port)
-- [STORYBOOK_PORT](README.md#const-storybook_port)
-- [browserstackTunnel](README.md#const-browserstacktunnel)
-- [createBrowserMock](README.md#const-createbrowsermock)
-- [createSnapshotterMock](README.md#const-createsnapshottermock)
-- [debug](README.md#const-debug)
 - [sectionDebug](README.md#const-sectiondebug)
-- [server](README.md#const-server)
-- [tunnel](README.md#const-tunnel)
 
 ### Functions
 
-- [Boundaries](README.md#const-boundaries)
-- [browserInfo](README.md#const-browserinfo)
 - [doNothing](README.md#donothing)
-- [getActualSnapshotterOptions](README.md#getactualsnapshotteroptions)
 - [imageSnapshot](README.md#imagesnapshot)
-- [responsive](README.md#const-responsive)
-- [reverseTunnel](README.md#reversetunnel)
-- [runTestMethodWithLifeCycle](README.md#runtestmethodwithlifecycle)
-- [storybookStaticServer](README.md#storybookstaticserver)
 - [waitMillis](README.md#waitmillis)
-- [withEmoji](README.md#const-withemoji)
-- [withText](README.md#const-withtext)
-
-### Object literals
-
-- [CHROME](README.md#const-chrome)
-- [CONTEXT](README.md#const-context)
-- [FIREFOX](README.md#const-firefox)
 
 ## Type aliases
 
@@ -214,66 +189,6 @@ String of the form "1000x800"
 
 ## Variables
 
-### `Const` REMOTE_TUNNEL_PORT
-
-• **REMOTE_TUNNEL_PORT**: _9009_ = 9009
-
-_Defined in
-[integration-test/docker-selenium.test.ts:6](https://github.com/nknapp/addons-storyshots-selenium/blob/master/integration-test/docker-selenium.test.ts#L6)_
-
----
-
-### `Const` STORYBOOK_PORT
-
-• **STORYBOOK_PORT**: _9009_ = 9009
-
-_Defined in
-[integration-test/docker-selenium.test.ts:7](https://github.com/nknapp/addons-storyshots-selenium/blob/master/integration-test/docker-selenium.test.ts#L7)_
-
----
-
-### `Const` browserstackTunnel
-
-• **browserstackTunnel**: _Local‹›_ = new browserstack.Local()
-
-_Defined in
-[integration-test/test-utils/browserstack-tunnel.ts:5](https://github.com/nknapp/addons-storyshots-selenium/blob/master/integration-test/test-utils/browserstack-tunnel.ts#L5)_
-
----
-
-### `Const` createBrowserMock
-
-• **createBrowserMock**: _MockInstance‹Browser, [string,
-[BrowserSpecification](interfaces/browserspecification.md)]› &
-createBrowser_ = createBrowser as
-jest.MockedFunction<typeof createBrowser>
-
-_Defined in
-[src/index.test.ts:9](https://github.com/nknapp/addons-storyshots-selenium/blob/master/src/index.test.ts#L9)_
-
----
-
-### `Const` createSnapshotterMock
-
-• **createSnapshotterMock**: _MockInstance‹Snapshotter,
-[SnapshotterOptions]› & createSnapshotter_ = createSnapshotter as
-jest.MockedFunction<typeof createSnapshotter>
-
-_Defined in
-[src/index.test.ts:12](https://github.com/nknapp/addons-storyshots-selenium/blob/master/src/index.test.ts#L12)_
-
----
-
-### `Const` debug
-
-• **debug**: _Debugger_ =
-createDebug("addon-storyshot-selenium:browserstack-tunnel")
-
-_Defined in
-[integration-test/test-utils/browserstack-tunnel.ts:4](https://github.com/nknapp/addons-storyshots-selenium/blob/master/integration-test/test-utils/browserstack-tunnel.ts#L4)_
-
----
-
 ### `Const` sectionDebug
 
 • **sectionDebug**: _SectionDebug_ =
@@ -282,53 +197,7 @@ createSectionDebug(createDebug("addon-storyshots-selenium:index-trace"))
 _Defined in
 [src/index.ts:18](https://github.com/nknapp/addons-storyshots-selenium/blob/master/src/index.ts#L18)_
 
----
-
-### `Const` server
-
-• **server**: _[StaticFileServer](interfaces/staticfileserver.md)_ =
-storybookStaticServer(STORYBOOK_PORT)
-
-_Defined in
-[integration-test/docker-selenium.test.ts:28](https://github.com/nknapp/addons-storyshots-selenium/blob/master/integration-test/docker-selenium.test.ts#L28)_
-
----
-
-### `Const` tunnel
-
-• **tunnel**: _ChildService‹›_ = reverseTunnel({ host:
-process.env.SELENIUM_HOST || "localhost", tunnelSpec:
-`R:${REMOTE_TUNNEL_PORT}:localhost:${STORYBOOK_PORT}`, })
-
-_Defined in
-[integration-test/test-utils/browserstack-tunnel.ts:7](https://github.com/nknapp/addons-storyshots-selenium/blob/master/integration-test/test-utils/browserstack-tunnel.ts#L7)_
-
-_Defined in
-[integration-test/docker-selenium.test.ts:20](https://github.com/nknapp/addons-storyshots-selenium/blob/master/integration-test/docker-selenium.test.ts#L20)_
-
 ## Functions
-
-### `Const` Boundaries
-
-▸ **Boundaries**(): _HTMLElement_
-
-_Defined in
-[integration-test/stories/image-boundaries.stories.ts:10](https://github.com/nknapp/addons-storyshots-selenium/blob/master/integration-test/stories/image-boundaries.stories.ts#L10)_
-
-**Returns:** _HTMLElement_
-
----
-
-### `Const` browserInfo
-
-▸ **browserInfo**(): _HTMLElement_
-
-_Defined in
-[integration-test/stories/button.stories.ts:21](https://github.com/nknapp/addons-storyshots-selenium/blob/master/integration-test/stories/button.stories.ts#L21)_
-
-**Returns:** _HTMLElement_
-
----
 
 ### doNothing
 
@@ -341,27 +210,6 @@ returns an async function that resolves immediately, without doing
 anything.
 
 **Returns:** _[VoidAsyncFunction](README.md#voidasyncfunction)_
-
----
-
-### getActualSnapshotterOptions
-
-▸ **getActualSnapshotterOptions**(`nonRequiredOptions`:
-Partial‹[ImageSnapshotOptions](README.md#imagesnapshotoptions)›,
-`context`: [StorybookContext](interfaces/storybookcontext.md)):
-_Promise‹SnapshotterOptions›_
-
-_Defined in
-[src/index.test.ts:254](https://github.com/nknapp/addons-storyshots-selenium/blob/master/src/index.test.ts#L254)_
-
-**Parameters:**
-
-| Name                 | Type                                                            |
-| -------------------- | --------------------------------------------------------------- |
-| `nonRequiredOptions` | Partial‹[ImageSnapshotOptions](README.md#imagesnapshotoptions)› |
-| `context`            | [StorybookContext](interfaces/storybookcontext.md)              |
-
-**Returns:** _Promise‹SnapshotterOptions›_
 
 ---
 
@@ -397,75 +245,6 @@ Althogether, the following process will be performed:
 
 ---
 
-### `Const` responsive
-
-▸ **responsive**(): _HTMLElement_
-
-_Defined in
-[integration-test/stories/button.stories.ts:38](https://github.com/nknapp/addons-storyshots-selenium/blob/master/integration-test/stories/button.stories.ts#L38)_
-
-**Returns:** _HTMLElement_
-
----
-
-### reverseTunnel
-
-▸ **reverseTunnel**(`__namedParameters`: object): _ChildService_
-
-_Defined in
-[integration-test/test-utils/reverse-tunnel.ts:9](https://github.com/nknapp/addons-storyshots-selenium/blob/master/integration-test/test-utils/reverse-tunnel.ts#L9)_
-
-**Parameters:**
-
-▪ **\_\_namedParameters**: _object_
-
-| Name         | Type   |
-| ------------ | ------ |
-| `host`       | string |
-| `tunnelSpec` | string |
-
-**Returns:** _ChildService_
-
----
-
-### runTestMethodWithLifeCycle
-
-▸ **runTestMethodWithLifeCycle**(`options`:
-[ImageSnapshotOptions](README.md#imagesnapshotoptions), `context`:
-[StorybookContext](interfaces/storybookcontext.md)): _Promise‹void›_
-
-_Defined in
-[src/index.test.ts:240](https://github.com/nknapp/addons-storyshots-selenium/blob/master/src/index.test.ts#L240)_
-
-**Parameters:**
-
-| Name      | Type                                                   |
-| --------- | ------------------------------------------------------ |
-| `options` | [ImageSnapshotOptions](README.md#imagesnapshotoptions) |
-| `context` | [StorybookContext](interfaces/storybookcontext.md)     |
-
-**Returns:** _Promise‹void›_
-
----
-
-### storybookStaticServer
-
-▸ **storybookStaticServer**(`listenPort`: number):
-_[StaticFileServer](interfaces/staticfileserver.md)_
-
-_Defined in
-[integration-test/test-utils/server.ts:9](https://github.com/nknapp/addons-storyshots-selenium/blob/master/integration-test/test-utils/server.ts#L9)_
-
-**Parameters:**
-
-| Name         | Type   |
-| ------------ | ------ |
-| `listenPort` | number |
-
-**Returns:** _[StaticFileServer](interfaces/staticfileserver.md)_
-
----
-
 ### waitMillis
 
 ▸ **waitMillis**(`millis`: number):
@@ -487,94 +266,3 @@ This function can be used to configure a delay in the
 | `millis` | number | the number of milliseconds |
 
 **Returns:** _[VoidAsyncFunction](README.md#voidasyncfunction)_
-
----
-
-### `Const` withEmoji
-
-▸ **withEmoji**(): _HTMLElement_
-
-_Defined in
-[integration-test/stories/button.stories.ts:14](https://github.com/nknapp/addons-storyshots-selenium/blob/master/integration-test/stories/button.stories.ts#L14)_
-
-**Returns:** _HTMLElement_
-
----
-
-### `Const` withText
-
-▸ **withText**(): _string_
-
-_Defined in
-[integration-test/stories/button.stories.ts:12](https://github.com/nknapp/addons-storyshots-selenium/blob/master/integration-test/stories/button.stories.ts#L12)_
-
-**Returns:** _string_
-
-## Object literals
-
-### `Const` CHROME
-
-### ▪ **CHROME**: _object_
-
-_Defined in
-[src/index.test.ts:26](https://github.com/nknapp/addons-storyshots-selenium/blob/master/src/index.test.ts#L26)_
-
-### id
-
-• **id**: _string_ = "chrome"
-
-_Defined in
-[src/index.test.ts:27](https://github.com/nknapp/addons-storyshots-selenium/blob/master/src/index.test.ts#L27)_
-
-▪ **capabilities**: _object_
-
-_Defined in
-[src/index.test.ts:28](https://github.com/nknapp/addons-storyshots-selenium/blob/master/src/index.test.ts#L28)_
-
-- **browserName**: _string_ = "chrome"
-
----
-
-### `Const` CONTEXT
-
-### ▪ **CONTEXT**: _object_
-
-_Defined in
-[src/index.test.ts:33](https://github.com/nknapp/addons-storyshots-selenium/blob/master/src/index.test.ts#L33)_
-
-### kind
-
-• **kind**: _string_ = "a-kind"
-
-_Defined in
-[src/index.test.ts:33](https://github.com/nknapp/addons-storyshots-selenium/blob/master/src/index.test.ts#L33)_
-
-▪ **story**: _object_
-
-_Defined in
-[src/index.test.ts:33](https://github.com/nknapp/addons-storyshots-selenium/blob/master/src/index.test.ts#L33)_
-
-- **id**: _string_ = "a-story"
-
----
-
-### `Const` FIREFOX
-
-### ▪ **FIREFOX**: _object_
-
-_Defined in
-[src/index.test.ts:20](https://github.com/nknapp/addons-storyshots-selenium/blob/master/src/index.test.ts#L20)_
-
-### id
-
-• **id**: _string_ = "firefox"
-
-_Defined in
-[src/index.test.ts:21](https://github.com/nknapp/addons-storyshots-selenium/blob/master/src/index.test.ts#L21)_
-
-▪ **capabilities**: _object_
-
-_Defined in
-[src/index.test.ts:22](https://github.com/nknapp/addons-storyshots-selenium/blob/master/src/index.test.ts#L22)_
-
-- **browserName**: _string_ = "firefox"
