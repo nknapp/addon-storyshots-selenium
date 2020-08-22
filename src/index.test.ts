@@ -116,6 +116,10 @@ describe("index", () => {
 				url: "http://example.com",
 			});
 			expect(actualMatchOptions).toEqual({
+				customDiffConfig: {
+					includeAA: true,
+					threshold: 0.02,
+				},
 				customSnapshotIdentifier: "a-story-1024x768-firefox",
 				customSnapshotsDir: "src/__image_snapshots_selenium__/a-story",
 			});
@@ -157,6 +161,10 @@ describe("index", () => {
 				url: "http://example.com",
 			});
 			expect(matchOptions).toEqual({
+				customDiffConfig: {
+					includeAA: true,
+					threshold: 0.02,
+				},
 				customSnapshotIdentifier: "a-story-1024x768-firefox",
 				customSnapshotsDir: "aaa",
 			});
