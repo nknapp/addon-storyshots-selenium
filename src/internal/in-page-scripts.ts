@@ -4,6 +4,9 @@
 import { WidthAndHeight } from "./internal-types";
 
 export function setupStoryviewIframe(screenshotUrl: string): void {
+	document.body.style.overflow = "hidden";
+	document.querySelector("html").style.overflow = "hidden";
+
 	const storyview = document.createElement("iframe");
 	storyview.id = "storyview";
 	storyview.style.position = "absolute";
