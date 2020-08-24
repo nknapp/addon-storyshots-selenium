@@ -52,6 +52,8 @@ jobs:
       - run: yarn install
       - run: yarn build-storybook
       - run: yarn test:docker-selenium
+        env:
+          DEBUG: "addon-storyshots-selenium:*"
       - name: Upload snapshots and diffs
         if: ${{ failure() }}
         uses: actions/upload-artifact@v2
@@ -72,6 +74,7 @@ jobs:
       - run: yarn build-storybook
       - run: yarn test:browserstack
         env:
+          DEBUG: "addon-storyshots-selenium:*"
           BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSERSTACK_ACCESS_KEY }}
           BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
       - name: Upload snapshots and diffs

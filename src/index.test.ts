@@ -1,4 +1,4 @@
-import { imageSnapshot } from "./index";
+import { imageSnapshot, waitMillis } from "./index";
 import { Browser, createBrowser } from "./internal/browser";
 import { createSnapshotter, SnapshotterOptions } from "./internal/snapshotter";
 import { ImageSnapshotOptions, StorybookContext } from "./types";
@@ -80,6 +80,40 @@ describe("index", () => {
 			expect(snapshotterMock.createSnapshots.mock.calls).toContainEqual([
 				expect.objectContaining({ id: "firefox" }),
 				"http://localhost:6006",
+			]);
+		});
+
+		it("waits until the test method is finished before resolving the returned promise", async () => {
+			const timeline = [];
+
+			createSnapshotterMock.mockImplementation((options: SnapshotterOptions) => {
+				return {
+					async createSnapshots() {
+						timeline.push("Starting " + options.context.story.id);
+						await waitMillis(200)();
+						timeline.push("Done " + options.context.story.id);
+					},
+					errors: [],
+				};
+			});
+
+			const testMethod = imageSnapshot({ browsers: [FIREFOX] });
+
+			await testMethod.beforeAll();
+			try {
+				for (let i = 0; i < 3; i++) {
+					await testMethod({ kind: "kind", story: { id: "story " + i } });
+				}
+			} finally {
+				await testMethod.afterAll();
+			}
+			expect(timeline).toEqual([
+				"Starting story 0",
+				"Done story 0",
+				"Starting story 1",
+				"Done story 1",
+				"Starting story 2",
+				"Done story 2",
 			]);
 		});
 

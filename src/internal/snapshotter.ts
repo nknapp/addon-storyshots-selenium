@@ -11,6 +11,10 @@ import {
 import { Browser } from "./browser";
 import { forEachSequential } from "./utils/foreach-sequential";
 import { toMatchImageSnapshot } from "jest-image-snapshot";
+import { addDebugLogAllMethods } from "./utils/class-debug";
+import createDebug from "debug";
+
+const debug = createDebug("addon-storyshots-selenium:snapshotter");
 
 expect.extend({ toMatchImageSnapshot });
 
@@ -29,7 +33,7 @@ export interface Snapshotter {
 }
 
 export function createSnapshotter(options: SnapshotterOptions): Snapshotter {
-	return new SnapshotterImpl(options);
+	return addDebugLogAllMethods(debug, "snapshotter", new SnapshotterImpl(options));
 }
 
 class SnapshotterImpl implements Snapshotter {
