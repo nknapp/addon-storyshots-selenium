@@ -192,7 +192,7 @@ String of the form "1000x800"
 ### `Const` sectionDebug
 
 • **sectionDebug**: _SectionDebug_ =
-createSectionDebug(createDebug("addon-storyshots-selenium:index-trace"))
+createSectionDebug(createDebug("addon-storyshots-selenium:index"))
 
 _Defined in
 [src/index.ts:18](https://github.com/nknapp/addons-storyshots-selenium/blob/master/src/index.ts#L18)_

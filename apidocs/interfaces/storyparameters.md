@@ -11,13 +11,24 @@
 
 ### Properties
 
-- [sizes](storyparameters.md#sizes)
+- [ignore](storyparameters.md#optional-ignore)
+- [sizes](storyparameters.md#optional-sizes)
 
 ## Properties
 
-### sizes
+### `Optional` ignore
 
-• **sizes**: _[WidthXHeightString](../README.md#widthxheightstring)[]_
+• **ignore**? : _boolean_
 
 _Defined in
 [src/types.ts:121](https://github.com/nknapp/addons-storyshots-selenium/blob/master/src/types.ts#L121)_
+
+---
+
+### `Optional` sizes
+
+• **sizes**? :
+_[WidthXHeightString](../README.md#widthxheightstring)[]_
+
+_Defined in
+[src/types.ts:122](https://github.com/nknapp/addons-storyshots-selenium/blob/master/src/types.ts#L122)_
