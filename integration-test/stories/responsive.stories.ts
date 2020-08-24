@@ -29,10 +29,8 @@ export const responsive = (): HTMLElement => {
 	return button;
 };
 
-responsive.story = {
-	parameters: {
-		storyshotSelenium: {
-			sizes: ["800x600", "320x640", "1024x768"],
-		},
+responsive.parameters = {
+	storyshotSelenium: {
+		sizes: ["800x600", "320x640", "1024x768"],
 	},
 };
