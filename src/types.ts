@@ -118,5 +118,6 @@ export interface StorybookStory {
 }
 
 export interface StoryParameters {
-	sizes: WidthXHeightString[];
+	ignore?: boolean;
+	sizes?: WidthXHeightString[];
 }

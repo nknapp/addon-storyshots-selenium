@@ -82,6 +82,32 @@ describe("index", () => {
 				"http://localhost:6006",
 			]);
 		});
+
+		it("does not call the create-snapshot function if the story-parameter 'ignore' is set to true", async () => {
+			const snapshotterMock = {
+				createSnapshots: jest.fn(),
+				errors: [],
+			};
+
+			createSnapshotterMock.mockReturnValue(snapshotterMock);
+
+			await runTestMethodWithLifeCycle(
+				{ browsers: [FIREFOX, CHROME] },
+				{
+					...CONTEXT,
+					story: {
+						...CONTEXT.story,
+						parameters: {
+							storyshotSelenium: {
+								ignore: true,
+							},
+						},
+					},
+				}
+			);
+
+			expect(createSnapshotterMock).toHaveBeenCalledTimes(0);
+		});
 	});
 
 	describe("applies default values when creating the snapshotter", () => {

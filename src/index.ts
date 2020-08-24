@@ -52,6 +52,9 @@ export function imageSnapshot(options: ImageSnapshotOptions): TestMethod {
 	}
 
 	async function runTest(context: StorybookContext): Promise<void> {
+		if (context.story.parameters?.storyshotSelenium?.ignore) {
+			return;
+		}
 		const storySpecificSizes = context.story.parameters?.storyshotSelenium?.sizes;
 		const snapshotter = createSnapshotter({
 			beforeFirstScreenshot: optionsWithDefaults.beforeFirstScreenshot,
