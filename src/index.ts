@@ -15,7 +15,7 @@ import { createSnapshotter } from "./internal/snapshotter";
 
 export { doNothing, waitMillis } from "./public-utils";
 
-const sectionDebug = createSectionDebug(createDebug("addon-storyshots-selenium:index-trace"));
+const sectionDebug = createSectionDebug(createDebug("addon-storyshots-selenium:index"));
 
 /**
  * Create and compare image snapshots as part of the storyshots addon. The resulting function has `beforeAll`
@@ -47,7 +47,7 @@ export function imageSnapshot(options: ImageSnapshotOptions): TestMethod {
 
 	async function closeSeleniumWebdrivers() {
 		if (browsers != null) {
-			await Promise.all(browsers.map(async (browser) => browser.close().catch(doNothing())));
+			await Promise.all(browsers.map(async (browser) => browser.quit().catch(doNothing())));
 		}
 	}
 

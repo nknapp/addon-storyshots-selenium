@@ -3,6 +3,8 @@ import { toMatchImageSnapshot } from "jest-image-snapshot";
 import { Browser } from "./browser";
 import { WebDriver } from "selenium-webdriver";
 import { BasicHookOptions, WidthXHeightString } from "../types";
+import createDebug from "debug";
+import { willBeInitialized } from "./test-utils/will-be-initialized";
 
 jest.mock("jest-image-snapshot", () => {
 	return {
@@ -25,7 +27,37 @@ const snapshotterOptions = {
 		blur: 2,
 	}),
 };
-describe("snapshotter", () => {
+
+describe("snapshotter without debugging enabled", () => {
+	let originalDebugScope: string = willBeInitialized<string>();
+
+	beforeEach(() => {
+		originalDebugScope = createDebug.disable();
+	});
+
+	afterEach(() => {
+		createDebug.enable(originalDebugScope);
+	});
+
+	testSnapshotter();
+});
+
+describe("snapshotter with debug enabled", () => {
+	let originalDebugScope: string = willBeInitialized<string>();
+
+	beforeEach(() => {
+		originalDebugScope = createDebug.disable();
+		createDebug.enable("addon-storyshots-selenium:snapshotter");
+	});
+
+	afterEach(() => {
+		createDebug.enable(originalDebugScope);
+	});
+
+	testSnapshotter();
+});
+
+function testSnapshotter() {
 	it("calls the correct browser- and hook-methods", async () => {
 		const { calls, trackMethodsOf } = useCallTracker();
 
@@ -97,7 +129,7 @@ describe("snapshotter", () => {
 			"faking test failure for mockScreenshot-1024x768",
 		]);
 	});
-});
+}
 
 type GenericFunction<ParamsType extends any[], ResultType> = (...args: ParamsType) => ResultType;
 
@@ -149,6 +181,6 @@ function mockBrowser(): Browser {
 		async takeScreenshot(): Promise<Buffer> {
 			return (("mockScreenshot-" + currentSize) as any) as Buffer;
 		},
-		close: jest.fn().mockReturnValue(Promise.resolve()),
+		quit: jest.fn().mockReturnValue(Promise.resolve()),
 	};
 }

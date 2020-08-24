@@ -7,7 +7,7 @@ import { WidthAndHeight } from "./internal-types";
 import { intersect, parseSize } from "./utils/sizes";
 import { addDebugLogAllMethods } from "./utils/class-debug";
 
-const debug = createDebug("addon-storyshot-selenium:browser");
+const debug = createDebug("addon-storyshots-selenium:browser");
 
 export interface Browser {
 	readonly id: string;
@@ -15,7 +15,7 @@ export interface Browser {
 	prepareBrowser(url: string): Promise<void>;
 	resizeTo(size: WidthXHeightString): Promise<void>;
 	takeScreenshot(): Promise<Buffer>;
-	close(): Promise<void>;
+	quit(): Promise<void>;
 	getCurrentUrl(): string;
 }
 
@@ -36,7 +36,7 @@ class BrowserImpl implements Browser {
 
 	async prepareBrowser(url: string): Promise<void> {
 		this.currentUrl = url;
-		await this.driver.get("about:blank");
+		await this.driver.get("about:blank?url=" + encodeURIComponent(url));
 		await this.driver.manage().window().maximize();
 		await this.driver.executeScript(setupStoryviewIframe, url);
 		this.viewportSize = await this.driver.executeScript(getViewportSize);
@@ -72,8 +72,8 @@ class BrowserImpl implements Browser {
 		}
 	}
 
-	async close(): Promise<void> {
-		await this.driver.close();
+	async quit(): Promise<void> {
+		await this.driver.quit();
 	}
 
 	getCurrentUrl(): string {

@@ -293,8 +293,8 @@ describe("index", () => {
 
 		const browsers: jest.MockResult<Browser>[] = createBrowserMock.mock.results;
 		expect(browsers.length).toEqual(2);
-		expect(browsers[0].value.close).toHaveBeenCalled();
-		expect(browsers[1].value.close).toHaveBeenCalled();
+		expect(browsers[0].value.quit).toHaveBeenCalled();
+		expect(browsers[1].value.quit).toHaveBeenCalled();
 	});
 
 	it("afterAll ignore missing browsers", async () => {

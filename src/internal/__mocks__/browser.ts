@@ -33,7 +33,7 @@ export function createBrowserMockImplementation(
 		prepareBrowser: jest.fn().mockReturnValue(Promise.resolve()),
 		resizeTo: jest.fn().mockReturnValue(Promise.resolve()),
 		takeScreenshot: jest.fn().mockReturnValue(Promise.resolve(pixelGraphic)),
-		close: jest.fn().mockReturnValue(Promise.resolve()),
+		quit: jest.fn().mockReturnValue(Promise.resolve()),
 		getCurrentUrl: jest.fn(),
 	};
 }

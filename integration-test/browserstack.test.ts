@@ -44,6 +44,8 @@ if (process.env.BROWSERSTACK_ACCESS_KEY == null || process.env.BROWSERSTACK_USER
 				resolution: "1920x1080",
 				"browserstack.local": true,
 				"browserstack.localIdentifier": localIdentifier,
+				"browserstack.console": "info",
+				"browserstack.networkLogs": "true",
 			},
 		},
 		{
@@ -55,6 +57,8 @@ if (process.env.BROWSERSTACK_ACCESS_KEY == null || process.env.BROWSERSTACK_USER
 				resolution: "1920x1080",
 				"browserstack.local": true,
 				"browserstack.localIdentifier": localIdentifier,
+				"browserstack.console": "info",
+				"browserstack.networkLogs": "true",
 			},
 		},
 	];

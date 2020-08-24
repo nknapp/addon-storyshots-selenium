@@ -29,7 +29,7 @@ beforeEach(async () => {
 
 afterAll(async () => {
 	if (browser != null) {
-		await browser.close();
+		await browser.quit();
 	}
 });
 
