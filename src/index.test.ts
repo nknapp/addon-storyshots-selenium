@@ -1,7 +1,7 @@
 import { imageSnapshot, waitMillis } from "./index";
 import { Browser, createBrowser } from "./internal/browser";
 import { createSnapshotter, SnapshotterOptions } from "./internal/snapshotter";
-import { ImageSnapshotOptions, StorybookContext } from "./types";
+import { ImageSnapshotOptions, TestMethodContext } from "./types";
 import { createBrowserMockImplementation } from "./internal/__mocks__/browser";
 import "./internal/test-utils/to-take-millis-to-resolve";
 
@@ -30,7 +30,14 @@ const CHROME = {
 	},
 };
 
-const CONTEXT = { kind: "a-kind", story: { id: "a-story" } };
+const CONTEXT: TestMethodContext = {
+	fileName: "./index.stories.ts",
+	framework: "react",
+	name: "Story",
+	story: "story",
+	kind: "a-kind",
+	id: "a-story",
+};
 
 describe("index", () => {
 	let consoleErrorSpy: jest.SpyInstance;
@@ -83,15 +90,15 @@ describe("index", () => {
 			]);
 		});
 
-		it("waits until the test method is finished before resolving the returned promise", async () => {
+		it("waits until the test method is finished, then resolves the returned promise", async () => {
 			const timeline = [];
 
 			createSnapshotterMock.mockImplementation((options: SnapshotterOptions) => {
 				return {
 					async createSnapshots() {
-						timeline.push("Starting " + options.context.story.id);
+						timeline.push("Starting " + options.context.id);
 						await waitMillis(200)();
-						timeline.push("Done " + options.context.story.id);
+						timeline.push("Done " + options.context.id);
 					},
 					errors: [],
 				};
@@ -102,7 +109,7 @@ describe("index", () => {
 			await testMethod.beforeAll();
 			try {
 				for (let i = 0; i < 3; i++) {
-					await testMethod({ kind: "kind", story: { id: "story " + i } });
+					await testMethod({ context: { ...CONTEXT, kind: "kind", id: "story " + i } });
 				}
 			} finally {
 				await testMethod.afterAll();
@@ -129,12 +136,10 @@ describe("index", () => {
 				{ browsers: [FIREFOX, CHROME] },
 				{
 					...CONTEXT,
-					story: {
-						...CONTEXT.story,
-						parameters: {
-							storyshotSelenium: {
-								ignore: true,
-							},
+
+					parameters: {
+						storyshotSelenium: {
+							ignore: true,
 						},
 					},
 				}
@@ -311,13 +316,13 @@ describe("index", () => {
 
 async function runTestMethodWithLifeCycle(
 	options: ImageSnapshotOptions,
-	context: StorybookContext
+	context: TestMethodContext
 ) {
 	const testMethod = imageSnapshot(options);
 
 	await testMethod.beforeAll();
 	try {
-		await testMethod(context);
+		await testMethod({ context });
 	} finally {
 		await testMethod.afterAll();
 	}
@@ -325,7 +330,7 @@ async function runTestMethodWithLifeCycle(
 
 async function getActualSnapshotterOptions(
 	nonRequiredOptions: Partial<ImageSnapshotOptions>,
-	context: StorybookContext
+	context: TestMethodContext
 ): Promise<SnapshotterOptions> {
 	await runTestMethodWithLifeCycle({ browsers: [CHROME], ...nonRequiredOptions }, context);
 	return createSnapshotterMock.mock.calls[0][0];

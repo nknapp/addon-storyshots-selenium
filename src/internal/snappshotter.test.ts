@@ -16,8 +16,17 @@ const toMatchImageSnapshotMock = toMatchImageSnapshot as jest.MockedFunction<
 	typeof toMatchImageSnapshot
 >;
 
-const snapshotterOptions = {
-	context: { story: { id: "test-story" }, kind: "kind" },
+const context = {
+	id: "test-story",
+	kind: "kind",
+	story: "A story",
+	name: "Story name",
+	framework: "html",
+	fileName: "test.js",
+};
+
+const snapshotterOptions: SnapshotterOptions = {
+	context,
 	sizes: ["1280x1024", "1024x768"],
 	afterEachScreenshot: jest.fn().mockReturnValue(Promise.resolve()),
 	beforeFirstScreenshot: jest.fn().mockReturnValue(Promise.resolve()),
@@ -74,12 +83,7 @@ function testSnapshotter() {
 
 		const BASIC_HOOK_OPTIONS: BasicHookOptions = {
 			browserId: "chrome",
-			context: {
-				kind: "kind",
-				story: {
-					id: "test-story",
-				},
-			},
+			context: context,
 			url: "http://storybook:9009/iframe.html?id=test-story",
 		};
 

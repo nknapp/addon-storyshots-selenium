@@ -5,7 +5,7 @@ import { WebDriver } from "selenium-webdriver";
  * The result-type of the "imageSnapshot" method.
  */
 export interface TestMethod {
-	(context: StorybookContext): any;
+	(args: TestMethodArgs): any;
 	beforeAll: LifeCycleMethod;
 	afterAll: LifeCycleMethod;
 	timeout: number;
@@ -25,7 +25,7 @@ export interface LifeCycleMethod {
 export type WidthXHeightString = string;
 
 export interface BasicHookOptions {
-	context: StorybookContext | any;
+	context: TestMethodContext;
 	url: string;
 	browserId: string;
 }
@@ -105,16 +105,20 @@ export type InternalImageSnapshotOptions = OptionalImageSnapshotOptions &
 export type ImageSnapshotOptions = Partial<OptionalImageSnapshotOptions> &
 	RequiredImageSnapshotOptions;
 
-export interface StorybookContext {
-	kind: string;
-	story: StorybookStory;
+export interface TestMethodArgs {
+	context: TestMethodContext;
 }
 
-export interface StorybookStory {
+export interface TestMethodContext {
 	id: string;
+	kind: string;
+	name: string;
+	story: string;
+	fileName: string;
 	parameters?: {
 		storyshotSelenium?: StoryParameters;
 	};
+	framework: string;
 }
 
 export interface StoryParameters {

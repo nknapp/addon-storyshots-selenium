@@ -1,8 +1,8 @@
 import {
 	ImageSnapshotOptions,
 	InternalImageSnapshotOptions,
-	StorybookContext,
 	TestMethod,
+	TestMethodArgs,
 } from "./types";
 
 import createDebug from "debug";
@@ -51,11 +51,12 @@ export function imageSnapshot(options: ImageSnapshotOptions): TestMethod {
 		}
 	}
 
-	async function runTest(context: StorybookContext): Promise<void> {
-		if (context.story.parameters?.storyshotSelenium?.ignore) {
+	async function runTest({ context }: TestMethodArgs): Promise<void> {
+		if (context.parameters?.storyshotSelenium?.ignore) {
 			return;
 		}
-		const storySpecificSizes = context.story.parameters?.storyshotSelenium?.sizes;
+
+		const storySpecificSizes = context.parameters?.storyshotSelenium?.sizes;
 		const snapshotter = createSnapshotter({
 			beforeFirstScreenshot: optionsWithDefaults.beforeFirstScreenshot,
 			beforeEachScreenshot: optionsWithDefaults.beforeEachScreenshot,

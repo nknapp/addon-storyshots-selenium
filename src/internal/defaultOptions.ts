@@ -22,8 +22,8 @@ export function getDefaultMatchOptions(
 	{ context, size, browserId }: GetMatchOptionsOptions
 ): MatchImageSnapshotOptions {
 	return {
-		customSnapshotsDir: path.join(snapshotBaseDirectory, context.story.id),
-		customSnapshotIdentifier: `${context.story.id}-${size}-${browserId}`,
+		customSnapshotsDir: path.join(snapshotBaseDirectory, context.id),
+		customSnapshotIdentifier: `${context.id}-${size}-${browserId}`,
 		customDiffConfig: {
 			threshold: 0.02,
 			includeAA: true,

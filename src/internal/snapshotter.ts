@@ -4,7 +4,7 @@ import {
 	BeforeEachScreenshotFunction,
 	BeforeFirstScreenshotFunction,
 	GetMatchOptionsFunction,
-	StorybookContext,
+	TestMethodContext,
 	WidthXHeightString,
 	WithSize,
 } from "../types";
@@ -25,7 +25,7 @@ export interface SnapshotterOptions {
 	beforeEachScreenshot: BeforeEachScreenshotFunction;
 	afterEachScreenshot: AfterEachScreenshotFunction;
 	getMatchOptions: GetMatchOptionsFunction;
-	context: StorybookContext;
+	context: TestMethodContext;
 }
 
 export interface Snapshotter {
@@ -49,7 +49,7 @@ export function createSnapshotter(options: SnapshotterOptions): Snapshotter {
 }
 
 class SnapshotterImpl implements Snapshotter {
-	private readonly context: StorybookContext;
+	private readonly context: TestMethodContext;
 	private readonly sizes: WidthXHeightString[];
 	private readonly beforeFirstScreenshot: BeforeFirstScreenshotFunction;
 	private readonly beforeEachScreenshot: BeforeEachScreenshotFunction;
@@ -68,9 +68,7 @@ class SnapshotterImpl implements Snapshotter {
 	}
 
 	async createSnapshots(browser: Browser, storybookUrl: string): Promise<void> {
-		const screenshotUrl = `${storybookUrl}/iframe.html?id=${encodeURIComponent(
-			this.context.story.id
-		)}`;
+		const screenshotUrl = `${storybookUrl}/iframe.html?id=${encodeURIComponent(this.context.id)}`;
 		await browser.prepareBrowser(screenshotUrl);
 
 		const contextWithUrl = { context: this.context, url: screenshotUrl, browserId: browser.id };
