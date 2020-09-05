@@ -21,7 +21,7 @@
 • **ignore**? : _boolean_
 
 _Defined in
-[src/types.ts:121](https://github.com/nknapp/addons-storyshots-selenium/blob/master/src/types.ts#L121)_
+[src/types.ts:125](https://github.com/nknapp/addons-storyshots-selenium/blob/master/src/types.ts#L125)_
 
 ---
 
@@ -31,4 +31,4 @@ _Defined in
 _[WidthXHeightString](../README.md#widthxheightstring)[]_
 
 _Defined in
-[src/types.ts:122](https://github.com/nknapp/addons-storyshots-selenium/blob/master/src/types.ts#L122)_
+[src/types.ts:126](https://github.com/nknapp/addons-storyshots-selenium/blob/master/src/types.ts#L126)_

@@ -11,7 +11,7 @@ The result-type of the "imageSnapshot" method.
 
 ## Callable
 
-▸ (`context`: [StorybookContext](storybookcontext.md)): _any_
+▸ (`args`: [TestMethodArgs](testmethodargs.md)): _any_
 
 _Defined in
 [src/types.ts:7](https://github.com/nknapp/addons-storyshots-selenium/blob/master/src/types.ts#L7)_
@@ -20,9 +20,9 @@ The result-type of the "imageSnapshot" method.
 
 **Parameters:**
 
-| Name      | Type                                    |
-| --------- | --------------------------------------- |
-| `context` | [StorybookContext](storybookcontext.md) |
+| Name   | Type                                |
+| ------ | ----------------------------------- |
+| `args` | [TestMethodArgs](testmethodargs.md) |
 
 **Returns:** _any_
 

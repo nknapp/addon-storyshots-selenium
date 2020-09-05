@@ -1,3 +1,10 @@
+# [0.4.0](https://github.com/nknapp/addons-storyshots-selenium/compare/v0.3.0...v0.4.0) (2020-09-05)
+
+### Bug Fixes
+
+- adjust typigns of test-methods args to the ones actually use
+  ([29600d7](https://github.com/nknapp/addons-storyshots-selenium/commit/29600d7e41645f0114a57f3d461713514952432c))
+
 # [0.3.0](https://github.com/nknapp/addons-storyshots-selenium/compare/v0.2.0...v0.3.0) (2020-08-24)
 
 ### Bug Fixes

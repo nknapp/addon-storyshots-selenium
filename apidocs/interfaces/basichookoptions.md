@@ -28,7 +28,7 @@ _Defined in
 
 ### context
 
-• **context**: _[StorybookContext](storybookcontext.md) | any_
+• **context**: _[TestMethodContext](testmethodcontext.md)_
 
 _Defined in
 [src/types.ts:28](https://github.com/nknapp/addons-storyshots-selenium/blob/master/src/types.ts#L28)_

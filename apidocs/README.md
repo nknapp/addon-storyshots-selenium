@@ -12,9 +12,9 @@
 - [OptionalImageSnapshotOptions](interfaces/optionalimagesnapshotoptions.md)
 - [RequiredImageSnapshotOptions](interfaces/requiredimagesnapshotoptions.md)
 - [StoryParameters](interfaces/storyparameters.md)
-- [StorybookContext](interfaces/storybookcontext.md)
-- [StorybookStory](interfaces/storybookstory.md)
 - [TestMethod](interfaces/testmethod.md)
+- [TestMethodArgs](interfaces/testmethodargs.md)
+- [TestMethodContext](interfaces/testmethodcontext.md)
 - [WithImage](interfaces/withimage.md)
 - [WithSize](interfaces/withsize.md)
 

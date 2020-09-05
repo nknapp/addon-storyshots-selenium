@@ -1,6 +1,6 @@
 {
 	"name": "@knappi/addon-storyshots-selenium",
-	"version": "0.3.0",
+	"version": "0.4.0",
 	"description": "Compare screenshots of your storybook with multiple browsers and multiple screen sizes",
 	"main": "dist/index.js",
 	"types": "dist/index.d.ts",
